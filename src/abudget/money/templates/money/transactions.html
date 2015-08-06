@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Transactions{% endblock %}
+
+{% block content %}
+
+    <div class='row'>
+        <h1 class="page-header">Transactions</h1>
+    
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Enter transaction
+                </div>
+                <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <form action="{% url 'money:transaction_create' %}" method='post'>
+                            {% csrf_token %}
+                            {{ new_transaction_form|crispy }}
+                            {{ form|crispy }}
+                            <button class='btn btn-primary' type='submit'>Submit</button>
+                        </form>
+                    </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </span>
+
+        <div class='col-lg-6'>
+        <table class='table table-bordered'>
+            {% for trans in transactions %}
+                <tr>
+                    <td>{{ trans.date.date|date }}</td>
+                    <td>{{ trans.date.time|time }}</td>
+                    <td>{{ trans.title }}</td>
+                    <td>{{ trans.amount }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </div>
+{% endblock %}

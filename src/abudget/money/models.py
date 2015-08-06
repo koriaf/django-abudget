@@ -20,7 +20,13 @@ class TransactionCategory(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
-        return '[{}#{}] {}'.format(self.budget.id, self.budget.name, self.name)
+        return '[{}#{}] {}'.format(self.budget.id, self.budget.name, self.get_title())
+
+    def get_title(self):
+        if self.parent:
+            return '{} → {}'.format(self.parent.get_title(), self.name)
+        else:
+            return self.name
 
 
 class Transaction(models.Model):

@@ -13,6 +13,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'crispy_forms',
+
     'abudget',
     'abudget.money',
 )
@@ -26,6 +28,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'abudget.money.middleware.ProvideBudgetMiddleware',
 )
 
 ROOT_URLCONF = 'abudget.urls'
@@ -69,8 +72,12 @@ LANGUAGE_CODE = 'en-us'
 USE_I18N = True
 
 USE_L10N = True
+DATE_FORMAT = "d.m.Y"
+TIME_FORMAT = "H:i"
 
 USE_TZ = True
 TIME_ZONE = 'UTC'
 
 STATIC_URL = '/static/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
