@@ -1,0 +1,20 @@
+from .base import *  # NOQA
+
+DEBUG = True
+TEMPLATE_DEBUG = True
+
+ALLOWED_HOSTS = ['*']
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'abudget',
+        'USER': 'abudget',
+        'PASSWORD': 'abudget',
+        'HOST': 'localhost',
+        'PORT': '',
+        'ATOMIC_REQUESTS': True,
+    }
+}
+
+SECRET_KEY = '?'

@@ -1,0 +1,11 @@
+*~
+*#
+*.pyc
+*.sqlite
+.idea
+system/venv
+local.py
+prod.py
+var
+media
+
