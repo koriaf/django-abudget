@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load i18n %}
+{% load widget_tweaks %}
 
 {% block title %}Transactions{% endblock %}
 
@@ -8,17 +10,35 @@
     <div class='row'>
         <h1 class="page-header">Transactions</h1>
     
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-bell fa-fw"></i> Enter transaction
                 </div>
                 <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <form action="{% url 'money:transaction_create' %}" method='post'>
+                    <div class="panel-body transaction-add-form">
+                        <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal'>
                             {% csrf_token %}
-                            {{ new_transaction_form|crispy }}
-                            {{ form|crispy }}
+                            <input type='hidden' name='category' value='' id='id_selected_category' />
+
+                            {% for toplevel_category in request.budget.get_toplevel_categories %}
+                                <div class="btn-group" id='transaction_category_selector'>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ toplevel_category }} <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class='category_item' data-category-id='{{ category.id }}'><a href="#">{{ toplevel_category }}</a></li>
+                                        {% for category in toplevel_category.get_subcategories_recursive_list %}
+                                            <li class='category_item' data-category-id='{{ category.id }}'><a>{{ category.get_title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+
+                            <p class="form-control-static" id="selected-category-field">...</p>
+
+                            <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="Amount..." type="text">
+                            {{ new_transaction_form.title|attr:"class:form-control"}}<br/>
                             <button class='btn btn-primary' type='submit'>Submit</button>
                         </form>
                     </div>
@@ -33,6 +53,7 @@
                 <tr>
                     <td>{{ trans.date.date|date }}</td>
                     <td>{{ trans.date.time|time }}</td>
+                    <td>{{ trans.category.get_title }}</td>
                     <td>{{ trans.title }}</td>
                     <td>{{ trans.amount }}</td>
                 </tr>

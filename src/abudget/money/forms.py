@@ -11,6 +11,8 @@ class TransactionForm(forms.ModelForm):
     def __init__(self, budget=None, *args, **kwargs):
         super(TransactionForm, self).__init__(*args, **kwargs)
         self.budget = budget
+        self.fields['title'].widget.attrs['placeholder'] = 'Title...'
+        self.fields['amount'].widget.attrs['placeholder'] = 'Amount...'
         return
 
     def save(self, *args, **kwargs):

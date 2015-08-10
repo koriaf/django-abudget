@@ -1,0 +1,5 @@
+.transaction-add-form button[type='submit'] {
+    display: block;
+    width: 100%;
+    clear: both;
+}
