@@ -1,5 +1,8 @@
-    {
-      "name": "django-abudget",
-      "version": "0.1.0",
-      "dependencies": {}
-    }
+{
+  "name": "django-abudget",
+  "version": "0.1.0",
+  "dependencies": {
+    "jquery.cookie": "~1.4.1",
+    "startbootstrap-sb-admin-2": "~1.0.7"
+  }
+}

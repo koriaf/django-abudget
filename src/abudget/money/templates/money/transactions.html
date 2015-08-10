@@ -22,6 +22,8 @@
                             {% csrf_token %}
                             <input type='hidden' name='category' value='' id='id_selected_category' />
 
+                            {{ new_transaction_form.errors }}
+
                             {% for toplevel_category in request.budget.get_toplevel_categories %}
                                 <div class="btn-group" id='transaction_category_selector'>
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,9 +53,10 @@
         <div class='col-lg-6'>
             {% for trans in transactions %}
                 <div class='transaction-item row'>
+                    <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
                     <span class='category col-lg-6'>{{ trans.category.get_title }}</span>
                     <span class='amount col-lg-3'>{{ trans.amount }}</span>
-                    <span class='date col-lg-3'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
+                    <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
                     <span class='title col-lg-12'>{{ trans.title }}</span>
                 </div>
             {% endfor %}

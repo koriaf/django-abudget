@@ -1,6 +1,7 @@
 from braces.views import LoginRequiredMixin
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, View
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 
 from .forms import TransactionForm
 from .models import Transaction
@@ -27,8 +28,20 @@ class TransactionsCreateView(LoginRequiredMixin, CreateView):
         form_kwargs = super(TransactionsCreateView, self).get_form_kwargs(*args, **kwargs)
 
         # TODO: right workflow here
+        # TODO: error handling here
         form_kwargs['budget'] = self.request.budget
         return form_kwargs
 
     def get_success_url(self):
         return reverse('money:transactions')
+
+
+class TransactionsRemoveView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        transaction = Transaction.objects.get(
+            id=request.POST.get('transaction_id'),
+            budget=request.budget
+        )
+        transaction.delete()
+        return HttpResponse('ok')

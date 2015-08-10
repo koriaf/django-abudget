@@ -22,3 +22,10 @@
 .transaction-item .title {
     color: #555;
 }
+
+.transaction-item .remove-transaction {
+    float: right;
+    font-size: 15pt;
+    color: #700;
+    cursor: pointer;
+}
