@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load humanize %}
+{% load widget_tweaks %}
+
+{% block title %}Income{% endblock %}
+
+{% block content %}
+
+    <div class='row'>
+        <h1 class="page-header">Income</h1>
+    
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Enter Income Transaction
+                </div>
+                <div class="panel-body income-add-form">
+                    <form action="{% url 'money:income_create' %}" method='post' class='form-horisontal' id='id_income_form'>
+                        {% csrf_token %}
+
+                        {{ new_income_form|crispy }}
+
+                        <button class='btn btn-primary' type='submit' id='id_income_form_submit'>Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+
+        <div class='col-lg-6'>
+            {% for trans in transactions %}
+                <div class='transaction-item row'>
+                    <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
+                    <span class='category col-lg-6'>{{ trans.category }} ({{ trans.creator }})</span>
+                    <span class='amount col-lg-3'>{{ trans.amount }}</span>
+                    <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
+                    <span class='title col-lg-12'>{{ trans.title }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -31,6 +31,7 @@ class Budget(models.Model):
 
 
 class TransactionBase(models.Model):
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=300, blank=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True, db_index=True)

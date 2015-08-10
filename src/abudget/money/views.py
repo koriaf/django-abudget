@@ -4,7 +4,7 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, View
 
-from .forms import TransactionForm
+from .forms import TransactionForm, IncomeForm
 from .models import Transaction, Income
 
 
@@ -46,6 +46,7 @@ class TransactionsCreateView(LoginRequiredMixin, CreateView):
         # TODO: right workflow here
         # TODO: error handling here
         form_kwargs['budget'] = self.request.budget
+        form_kwargs['creator'] = self.request.user
         return form_kwargs
 
     def get_success_url(self):
@@ -65,3 +66,29 @@ class TransactionsRemoveView(LoginRequiredMixin, View):
 
 class IncomeView(LoginRequiredMixin, TemplateView):
     template_name = 'money/income.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(IncomeView, self).get_context_data(*args, **kwargs)
+
+        context['new_income_form'] = IncomeForm()
+        context['transactions'] = Income.objects.filter(
+            budget=self.request.budget,
+        )
+        return context
+
+
+class IncomeCreateView(LoginRequiredMixin, CreateView):
+    model = Income
+    form_class = IncomeForm
+    # TODO: exception if form invalid
+
+    def get_form_kwargs(self, *args, **kwargs):
+        form_kwargs = super(IncomeCreateView, self).get_form_kwargs(*args, **kwargs)
+        # TODO: right workflow here
+        # TODO: error handling here
+        form_kwargs['budget'] = self.request.budget
+        form_kwargs['creator'] = self.request.user
+        return form_kwargs
+
+    def get_success_url(self):
+        return reverse('money:income')

@@ -37,10 +37,9 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li><a href="/"><i class="fa fa-dashboard fa-fw"></i> Transactions</a></li>
+                        <li><a href="{% url 'money:transactions' %}"><i class="fa fa-dashboard fa-fw"></i> Transactions</a></li>
                         <li><a href="{% url 'money:income' %}"><i class="fa fa-download fa-fw"></i> Income</a></li>
                         <li><a href="/stat/"><i class="fa fa-bar-chart-o fa-fw"></i> Statistics</a></li>
-
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
