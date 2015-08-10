@@ -14,7 +14,7 @@
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Enter transaction
+                    <i class="fa fa-plus-circle"></i> Enter transaction
                 </div>
                 <div class="panel-body transaction-add-form">
                     <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
@@ -48,24 +48,12 @@
             <!-- /.panel -->
         </div>
 
-        <div class='col-lg-6'>
-            {% for trans in transactions %}
-                <div class='transaction-item row'>
-                    <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
-                    <span class='category col-lg-6'>{{ trans.category.get_title }}</span>
-                    <span class='amount col-lg-3'>{{ trans.amount }}</span>
-                    <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
-                    <span class='title col-lg-12'>{{ trans.title }}</span>
-                </div>
-            {% endfor %}
-        </div>
-
         <div class='col-lg-3'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Stat
+                    <i class="fa fa-thumb-tack"></i> Stat
                 </div>
-                <div class="panel-body transaction-add-form">
+                <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item row">
                             <span class="col-lg-8">Income</span>
@@ -83,5 +71,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="clearfix"></div>
+
+        <div class='col-lg-6'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-th-list"></i> History
+                </div>
+                <div class="panel-body">
+                    {% for trans in transactions %}
+                        <div class='transaction-item row'>
+                            <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
+                            <span class='category col-lg-6'>{{ trans.category.get_title }}</span>
+                            <span class='amount col-lg-3'>{{ trans.amount }}</span>
+                            <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
+                            <span class='title col-lg-12'>{{ trans.title }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        
     </div>
 {% endblock %}
