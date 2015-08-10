@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load i18n %}
+{% load humanize %}
 {% load widget_tweaks %}
 
 {% block title %}Transactions{% endblock %}
@@ -10,7 +11,7 @@
     <div class='row'>
         <h1 class="page-header">Transactions</h1>
     
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-bell fa-fw"></i> Enter transaction
@@ -45,20 +46,17 @@
                 <!-- /.panel-body -->
             </div>
             <!-- /.panel -->
-        </span>
+        </div>
 
         <div class='col-lg-6'>
-        <table class='table table-bordered'>
             {% for trans in transactions %}
-                <tr>
-                    <td>{{ trans.date.date|date }}</td>
-                    <td>{{ trans.date.time|time }}</td>
-                    <td>{{ trans.category.get_title }}</td>
-                    <td>{{ trans.title }}</td>
-                    <td>{{ trans.amount }}</td>
-                </tr>
+                <div class='transaction-item row'>
+                    <span class='category col-lg-6'>{{ trans.category.get_title }}</span>
+                    <span class='amount col-lg-3'>{{ trans.amount }}</span>
+                    <span class='date col-lg-3'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
+                    <span class='title col-lg-12'>{{ trans.title }}</span>
+                </div>
             {% endfor %}
-        </table>
         </div>
     </div>
 {% endblock %}

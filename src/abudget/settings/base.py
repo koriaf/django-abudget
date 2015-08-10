@@ -12,6 +12,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'crispy_forms',
     'widget_tweaks',
@@ -74,6 +75,7 @@ USE_I18N = True
 
 USE_L10N = True
 DATE_FORMAT = "d.m.Y"
+DATETIME_FORMAT = "d.m.Y H:i"
 TIME_FORMAT = "H:i"
 
 USE_TZ = True

@@ -3,3 +3,22 @@
     width: 100%;
     clear: both;
 }
+
+
+.transaction-item {
+    display: block;
+    width: 100%;
+    border-bottom: 1px silver dashed;
+    margin-bottom: 5px;
+}
+
+.transaction-item .date {
+    color: gray;
+}
+.transaction-item .category,
+.transaction-item .amount {
+    font-size: 120%;
+}
+.transaction-item .title {
+    color: #555;
+}
