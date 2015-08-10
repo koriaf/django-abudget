@@ -33,4 +33,27 @@ $(document).bind('ready', function() {
              $th.parent('.transaction-item').fadeOut('fast');
         });
     });
+
+    $("#id_transaction_form").bind('submit', function() {
+        // check if amount fiels has math expression and calculate it
+        var $amount_field = $("#id_amount");
+        var amount_expression = $amount_field.val();
+        var result = NaN;
+        try {
+            result = eval(amount_expression);
+        } catch (err) {
+            result = NaN;
+        }
+        if (isNaN(result)) {
+            $amount_field.css('background-color', '#faa');
+            $("#id_amount").unbind('keydown');
+            $("#id_amount").bind('keydown', function() {$(this).css('background-color', '')});
+            return false;
+        } else {
+            $amount_field.val(result);
+        }
+
+        // check for all fields filled
+        return true;
+    });
 });

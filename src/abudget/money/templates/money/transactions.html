@@ -18,7 +18,7 @@
                 </div>
                 <!-- /.panel-heading -->
                     <div class="panel-body transaction-add-form">
-                        <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal'>
+                        <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
                             {% csrf_token %}
                             <input type='hidden' name='category' value='' id='id_selected_category' />
 
@@ -42,7 +42,7 @@
 
                             <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="Amount..." type="text">
                             {{ new_transaction_form.title|attr:"class:form-control"}}<br/>
-                            <button class='btn btn-primary' type='submit'>Submit</button>
+                            <button class='btn btn-primary' type='submit' id='id_transaction_form_submit'>Submit</button>
                         </form>
                     </div>
                 <!-- /.panel-body -->
