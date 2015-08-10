@@ -16,6 +16,7 @@ class TransactionCategoryAdmin(admin.ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'budget', 'title', 'amount', 'date')
+    readonly_fields = []
 
 
 admin.site.register(IncomeCategory)

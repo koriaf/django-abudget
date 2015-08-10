@@ -1,11 +1,36 @@
+import datetime
+
 from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, View
+from django.shortcuts import redirect
 
 from .forms import TransactionForm, IncomeForm
 from .models import Transaction, Income
+
+
+def filter_by_filter(request, queryset):
+    filter_by = request.session.get('filter_by', {'date': 'this_month'})
+    filter_by_date = filter_by.get('date', 'this_month')
+    if filter_by_date == 'this_month':
+        today = datetime.date.today()
+        first_day = today.replace(day=1)
+        last_day = (first_day + datetime.timedelta(days=45)).replace(day=1)
+        queryset = queryset.filter(
+            date__gte=first_day,
+            date__lte=last_day
+        )
+    elif filter_by_date == 'prev_month':
+        today = datetime.date.today()
+        last_day = today.replace(day=1) - datetime.timedelta(days=1)
+        first_day = (last_day - datetime.timedelta(days=10)).replace(day=1)
+        queryset = queryset.filter(
+            date__gte=first_day,
+            date__lte=last_day
+        )
+    return queryset
 
 
 class TransactionsView(LoginRequiredMixin, TemplateView):
@@ -28,10 +53,13 @@ class TransactionsView(LoginRequiredMixin, TemplateView):
         context['stat_income'] = stat_income
         context['stat_balance'] = stat_balance
 
-        context['new_transaction_form'] = TransactionForm()
-        context['transactions'] = Transaction.objects.filter(
+        transactions = Transaction.objects.filter(
             budget=self.request.budget,
         )
+        transactions = filter_by_filter(self.request, transactions)
+
+        context['new_transaction_form'] = TransactionForm()
+        context['transactions'] = transactions
         return context
 
 
@@ -92,3 +120,16 @@ class IncomeCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('money:income')
+
+
+class UpdateFilterView(View):
+
+    def post(self, request, *args, **kwargs):
+        redirect_url = request.POST.get('redirect_to')
+        filter_by = request.session.get('filter_by', {'date': 'this_month'})
+        filter_by['date'] = request.POST.get('date', 'this_month')
+        request.session['filter_by'] = filter_by
+        request.session.modified = True
+        if not redirect_url[0] == '/':
+            raise Exception()
+        return redirect(redirect_url)

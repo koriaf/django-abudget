@@ -2,7 +2,7 @@
     text-align: right;
 }
 
-.transaction-add-form button[type='submit'] {
+.big-button {
     display: block;
     width: 100%;
     clear: both;
