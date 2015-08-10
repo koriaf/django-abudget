@@ -30,11 +30,20 @@ class Budget(models.Model):
         return result
 
 
+class TransactionBase(models.Model):
+    title = models.CharField(max_length=300, blank=True)
+    amount = models.DecimalField(max_digits=11, decimal_places=2)
+    date = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        abstract = True
+
+
 class TransactionCategory(models.Model):
+    # TODO: orderable
     budget = models.ForeignKey('Budget')
     parent = models.ForeignKey('self', blank=True, null=True)
     name = models.CharField(max_length=200)
-    # TODO: orderable
 
     class Meta:
         ordering = ('id',)
@@ -60,13 +69,29 @@ class TransactionCategory(models.Model):
         return result
 
 
-class Transaction(models.Model):
+class Transaction(TransactionBase):
     budget = models.ForeignKey('Budget')
     category = models.ForeignKey('TransactionCategory', blank=True, null=True)
-    title = models.CharField(max_length=300, blank=True)
-    amount = models.DecimalField(max_digits=11, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True, db_index=True)
-    income = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('-date',)
+
+    def __str__(self):
+        return '[{}#{}] {} at {}'.format(self.budget.id, self.budget.name, self.amount, self.date)
+
+
+class IncomeCategory(models.Model):
+    # TODO: orderable
+    budget = models.ForeignKey('Budget')
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Income(TransactionBase):
+    category = models.ForeignKey('IncomeCategory')
+    budget = models.ForeignKey('Budget')
 
     class Meta:
         ordering = ('-date',)

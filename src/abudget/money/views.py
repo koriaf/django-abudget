@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, View
 
 from .forms import TransactionForm
-from .models import Transaction
+from .models import Transaction, Income
 
 
 class TransactionsView(LoginRequiredMixin, TemplateView):
@@ -16,12 +16,10 @@ class TransactionsView(LoginRequiredMixin, TemplateView):
 
         stat_spent = Transaction.objects.filter(
             budget=self.request.budget,
-            income=False
         ).aggregate(Sum('amount'))['amount__sum'] or 0
 
-        stat_income = Transaction.objects.filter(
+        stat_income = Income.objects.filter(
             budget=self.request.budget,
-            income=True
         ).aggregate(Sum('amount'))['amount__sum'] or 0
 
         stat_balance = stat_income - stat_spent
@@ -33,7 +31,6 @@ class TransactionsView(LoginRequiredMixin, TemplateView):
         context['new_transaction_form'] = TransactionForm()
         context['transactions'] = Transaction.objects.filter(
             budget=self.request.budget,
-            income=False
         )
         return context
 
@@ -64,3 +61,7 @@ class TransactionsRemoveView(LoginRequiredMixin, View):
         )
         transaction.delete()
         return HttpResponse('ok')
+
+
+class IncomeView(LoginRequiredMixin, TemplateView):
+    template_name = 'money/income.html'
