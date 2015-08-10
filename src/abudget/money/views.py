@@ -1,7 +1,8 @@
 from braces.views import LoginRequiredMixin
-from django.views.generic import TemplateView, CreateView, View
 from django.core.urlresolvers import reverse
+from django.db.models import Sum
 from django.http import HttpResponse
+from django.views.generic import TemplateView, CreateView, View
 
 from .forms import TransactionForm
 from .models import Transaction
@@ -12,9 +13,27 @@ class TransactionsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(TransactionsView, self).get_context_data(*args, **kwargs)
+
+        stat_spent = Transaction.objects.filter(
+            budget=self.request.budget,
+            income=False
+        ).aggregate(Sum('amount'))['amount__sum'] or 0
+
+        stat_income = Transaction.objects.filter(
+            budget=self.request.budget,
+            income=True
+        ).aggregate(Sum('amount'))['amount__sum'] or 0
+
+        stat_balance = stat_income - stat_spent
+
+        context['stat_spent'] = stat_spent
+        context['stat_income'] = stat_income
+        context['stat_balance'] = stat_balance
+
         context['new_transaction_form'] = TransactionForm()
         context['transactions'] = Transaction.objects.filter(
-            budget=self.request.budget
+            budget=self.request.budget,
+            income=False
         )
         return context
 

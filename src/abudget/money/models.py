@@ -66,6 +66,10 @@ class Transaction(models.Model):
     title = models.CharField(max_length=300, blank=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True, db_index=True)
+    income = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('-date',)
 
     def __str__(self):
         return '[{}#{}] {} at {}'.format(self.budget.id, self.budget.name, self.amount, self.date)

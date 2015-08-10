@@ -16,36 +16,34 @@
                 <div class="panel-heading">
                     <i class="fa fa-bell fa-fw"></i> Enter transaction
                 </div>
-                <!-- /.panel-heading -->
-                    <div class="panel-body transaction-add-form">
-                        <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
-                            {% csrf_token %}
-                            <input type='hidden' name='category' value='' id='id_selected_category' />
+                <div class="panel-body transaction-add-form">
+                    <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
+                        {% csrf_token %}
+                        <input type='hidden' name='category' value='' id='id_selected_category' />
 
-                            {{ new_transaction_form.errors }}
+                        {{ new_transaction_form.errors }}
 
-                            {% for toplevel_category in request.budget.get_toplevel_categories %}
-                                <div class="btn-group" id='transaction_category_selector'>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        {{ toplevel_category }} <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li class='category_item' data-category-id='{{ category.id }}'><a href="#">{{ toplevel_category }}</a></li>
-                                        {% for category in toplevel_category.get_subcategories_recursive_list %}
-                                            <li class='category_item' data-category-id='{{ category.id }}'><a>{{ category.get_title }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% endfor %}
+                        {% for toplevel_category in request.budget.get_toplevel_categories %}
+                            <div class="btn-group" id='transaction_category_selector'>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ toplevel_category }} <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class='category_item' data-category-id='{{ category.id }}'><a href="#">{{ toplevel_category }}</a></li>
+                                    {% for category in toplevel_category.get_subcategories_recursive_list %}
+                                        <li class='category_item' data-category-id='{{ category.id }}'><a>{{ category.get_title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
 
-                            <p class="form-control-static" id="selected-category-field">...</p>
+                        <p class="form-control-static" id="selected-category-field">...</p>
 
-                            <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="Amount..." type="text">
-                            {{ new_transaction_form.title|attr:"class:form-control"}}<br/>
-                            <button class='btn btn-primary' type='submit' id='id_transaction_form_submit'>Submit</button>
-                        </form>
-                    </div>
-                <!-- /.panel-body -->
+                        <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="Amount..." type="text">
+                        {{ new_transaction_form.title|attr:"class:form-control"}}<br/>
+                        <button class='btn btn-primary' type='submit' id='id_transaction_form_submit'>Submit</button>
+                    </form>
+                </div>
             </div>
             <!-- /.panel -->
         </div>
@@ -60,6 +58,30 @@
                     <span class='title col-lg-12'>{{ trans.title }}</span>
                 </div>
             {% endfor %}
+        </div>
+
+        <div class='col-lg-3'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Stat
+                </div>
+                <div class="panel-body transaction-add-form">
+                    <ul class="list-group">
+                        <li class="list-group-item row">
+                            <span class="col-lg-8">Income</span>
+                            <span class="col-lg-4 righted">{{ stat_income|intcomma }}</span>
+                        </li>
+                        <li class="list-group-item row">
+                            <span class="col-lg-8">Spent</span>
+                            <span class="col-lg-4 righted">{{ stat_spent|intcomma }}</span>
+                        </li>
+                        <li class="list-group-item row">
+                            <span class="col-lg-8">Balance</span>
+                            <span class="col-lg-4 righted">{{ stat_balance|intcomma }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
