@@ -17,7 +17,7 @@
                     <i class="fa fa-bell fa-fw"></i> Enter Income Transaction
                 </div>
                 <div class="panel-body income-add-form">
-                    <form action="{% url 'money:income_create' %}" method='post' class='form-horisontal' id='id_income_form'>
+                    <form action="#" method='post' class='form-horisontal' id='id_income_form'>
                         {% csrf_token %}
 
                         {{ new_income_form|crispy }}

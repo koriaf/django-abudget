@@ -19,6 +19,7 @@ INSTALLED_APPS = (
 
     'abudget',
     'abudget.money',
+    'abudget.users',
 )
 
 MIDDLEWARE_CLASSES = (

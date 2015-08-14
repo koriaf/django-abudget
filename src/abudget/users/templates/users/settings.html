@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+    <div class='row'>
+        <h1 class="page-header">Settings</h1>
+    
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Transactions categories
+                </div>
+                <div class="panel-body">
+                    <form action="{% url 'users:settings_category_add' %}" method='post' class='form-inline'>
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_category_name">Name</label>
+                            <input type="text" class="form-control" id="id_category_name" placeholder="new category name" name='name' required>
+                        </div>
+                        <div class="form-group">
+                            <label>Parent</label>
+                            <select name='parent' class="form-control" >
+                                <option value=''>&ndash;</option>
+                                {% for cat in request.budget.transactioncategory_set.all %}
+                                    <option value="{{ cat.id }}">{{ cat }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-default">Add category</button>
+                    </form>
+
+                    <form action="#" method='post' class='form-inline'>
+                        {% csrf_token %}
+                        <ul class="list-group">
+                            {% for cat in request.budget.transactioncategory_set.all %}
+                                <li class="list-group-item">
+                                    {{ cat }}
+                                    <button class="btn btn-danger btn-xs" type='submit' name='delete_category' value='{{ cat.id }}'>delete</button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <button class='btn btn-primary' type='submit'>Submit</button>
+                    </form>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+
+    </div>
+{% endblock %}

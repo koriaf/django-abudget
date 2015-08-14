@@ -12,6 +12,7 @@ from .models import Transaction, Income
 
 
 def filter_by_filter(request, queryset):
+    # TODO: refactor it.
     filter_by = request.session.get('filter_by', {'date': 'this_month'})
     filter_by_date = filter_by.get('date', 'this_month')
     if filter_by_date == 'this_month':

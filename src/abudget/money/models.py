@@ -43,7 +43,12 @@ class TransactionBase(models.Model):
 class TransactionCategory(models.Model):
     # TODO: orderable
     budget = models.ForeignKey('Budget')
-    parent = models.ForeignKey('self', blank=True, null=True)
+    parent = models.ForeignKey(
+        'self',
+        blank=True, null=True, default=None,
+        on_delete=models.SET_DEFAULT,
+        related_name='children',
+    )
     name = models.CharField(max_length=200)
 
     class Meta:
@@ -72,7 +77,7 @@ class TransactionCategory(models.Model):
 
 class Transaction(TransactionBase):
     budget = models.ForeignKey('Budget')
-    category = models.ForeignKey('TransactionCategory', blank=True, null=True)
+    category = models.ForeignKey('TransactionCategory', blank=True, null=True,  default=None, on_delete=models.SET_DEFAULT)
 
     class Meta:
         ordering = ('-date',)
@@ -91,7 +96,7 @@ class IncomeCategory(models.Model):
 
 
 class Income(TransactionBase):
-    category = models.ForeignKey('IncomeCategory')
+    category = models.ForeignKey('IncomeCategory', blank=True, null=True, default=None, on_delete=models.SET_DEFAULT)
     budget = models.ForeignKey('Budget')
 
     class Meta:
