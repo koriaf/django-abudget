@@ -21,10 +21,10 @@
                         </tr>
                         {% for category in spent_by_category_report_data %}
                             {% if category.report_data.transactions_count > 0 %}
-                                <tr class='spent_by_categories_table_row' data-morris-index="{{ forloop.counter0 }}">
-                                    <td>{{ category }}</td>
+                                <tr class='spent_by_categories_table_row' data-morris-index="{{ forloop.counter0 }}" data-morris-display="true" data-morris-title="{{ category }}" data-morris-value="{{ category.report_data.transactions_amount }}">
+                                    <td class='title'>{{ category }}</td>
                                     <td class='righted'>{{ category.report_data.transactions_count }}</td>
-                                    <td class='righted'>{{ category.report_data.transactions_amount|intcomma }}</td>
+                                    <td class='righted' class='value'>{{ category.report_data.transactions_amount|intcomma }}</td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -44,12 +44,24 @@
 {% block extra_js %}
     <script>
         $(document).bind('ready', function on_stat_page_load() {
+            function prepare_spent_by_categories_data() {
+                var data = [];
+                $("tr.spent_by_categories_table_row").each(function() {
+                    var $th = $(this);
+                    var row = {
+                        label: $th.data('morris-title'),
+                        value: $th.data('morris-value'),
+                    };
+                    if ($th.data('morris-display') == true) {
+                        data.push(row);
+                    };
+                });
+                return data;
+            };
+
             var spent_by_categories_chart = Morris.Donut({
                 element: 'spent_by_categories_canvas',
-                data: [{% for cat in spent_by_category_report_data %}{% if cat.report_data.transactions_amount %} {
-                    label: "{{ cat }}",
-                    value: {{ cat.report_data.transactions_amount }}
-                },{% endif %}{% endfor %}],
+                data: prepare_spent_by_categories_data(),
                 resize: true
             });
 
@@ -58,6 +70,18 @@
                 $th.parent().find('tr').css('background-color', '');
                 spent_by_categories_chart.select($th.data('morris-index'));
                 $th.css('background-color', 'whitesmoke');
+            });
+
+            $("tr.spent_by_categories_table_row").bind('click', function spent_by_categories_table_row_click() {
+                var $th = $(this);
+                if ($th.data('morris-display') == true) {
+                    $th.data('morris-display', 'false');
+                    $th.find('td').css('color', 'silver');
+                } else {
+                    $th.data('morris-display', 'true');
+                    $th.find('td').css('color', 'black');
+                };
+                spent_by_categories_chart.setData(prepare_spent_by_categories_data());
             });
         });
     </script>
