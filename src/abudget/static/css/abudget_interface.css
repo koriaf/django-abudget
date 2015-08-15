@@ -18,6 +18,7 @@
 
 .transaction-item .date {
     color: gray;
+    white-space: nowrap;
 }
 .transaction-item .category,
 .transaction-item .amount {

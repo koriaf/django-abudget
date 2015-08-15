@@ -35,7 +35,7 @@
                         <ul class="list-group">
                             {% for cat in request.budget.transactioncategory_set.all %}
                                 <li class="list-group-item">
-                                    {{ cat }}
+                                    [{{ cat.id }}] {{ cat }}
                                     <button class="btn btn-danger btn-xs" type='submit' name='delete_category' value='{{ cat.id }}'>delete</button>
                                 </li>
                             {% endfor %}

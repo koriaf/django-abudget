@@ -1,5 +1,3 @@
-import datetime
-
 from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
@@ -11,42 +9,17 @@ from .forms import TransactionForm, IncomeForm
 from .models import Transaction, Income
 
 
-class FilterByDateMixin(object):
-
-    def filter_queryset_by_date(self, queryset):
-        # TODO: refactor it.
-        filter_by = self.request.session.get('filter_by', {'date': 'this_month'})
-        filter_by_date = filter_by.get('date', 'this_month')
-        if filter_by_date == 'this_month':
-            today = datetime.date.today()
-            first_day = today.replace(day=1)
-            last_day = (first_day + datetime.timedelta(days=45)).replace(day=1)
-            queryset = queryset.filter(
-                date__gte=first_day,
-                date__lte=last_day
-            )
-        elif filter_by_date == 'prev_month':
-            today = datetime.date.today()
-            last_day = today.replace(day=1) - datetime.timedelta(days=1)
-            first_day = (last_day - datetime.timedelta(days=10)).replace(day=1)
-            queryset = queryset.filter(
-                date__gte=first_day,
-                date__lte=last_day
-            )
-        return queryset
-
-
-class TransactionsView(LoginRequiredMixin, FilterByDateMixin, TemplateView):
+class TransactionsView(LoginRequiredMixin, TemplateView):
     template_name = 'money/transactions.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super(TransactionsView, self).get_context_data(*args, **kwargs)
 
-        stat_spent = Transaction.objects.filter(
+        stat_spent = Transaction.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         ).aggregate(Sum('amount'))['amount__sum'] or 0
 
-        stat_income = Income.objects.filter(
+        stat_income = Income.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         ).aggregate(Sum('amount'))['amount__sum'] or 0
 
@@ -56,10 +29,9 @@ class TransactionsView(LoginRequiredMixin, FilterByDateMixin, TemplateView):
         context['stat_income'] = stat_income
         context['stat_balance'] = stat_balance
 
-        transactions = Transaction.objects.filter(
+        transactions = Transaction.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         )
-        transactions = self.filter_queryset_by_date(transactions)
 
         context['new_transaction_form'] = TransactionForm()
         context['transactions'] = transactions
@@ -102,7 +74,7 @@ class IncomeView(LoginRequiredMixin, TemplateView):
         context = super(IncomeView, self).get_context_data(*args, **kwargs)
 
         context['new_income_form'] = IncomeForm()
-        context['transactions'] = Income.objects.filter(
+        context['transactions'] = Income.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         )
         return context

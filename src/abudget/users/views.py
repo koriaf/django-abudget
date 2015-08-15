@@ -6,7 +6,6 @@ from django.views.generic import TemplateView, CreateView
 from django.shortcuts import redirect
 
 from abudget.money.models import TransactionCategory, Transaction
-from abudget.money.views import FilterByDateMixin
 from abudget.users.forms import CreateTransactionCategoryForm
 
 
@@ -41,14 +40,13 @@ class UserSettingsCategoryAddView(LoginRequiredMixin, CreateView):
         return reverse('users:settings')
 
 
-class UserStatView(LoginRequiredMixin, FilterByDateMixin, TemplateView):
+class UserStatView(LoginRequiredMixin, TemplateView):
     template_name = 'users/stat.html'
 
     def get_spent_by_category_report_data(self):
-        this_period_transactions = Transaction.objects.filter(
+        this_period_transactions = Transaction.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         )
-        this_period_transactions = self.filter_queryset_by_date(this_period_transactions)
         categories = self.request.budget.get_ordered_categories_list()
         for category in categories:
             category.report_data = {

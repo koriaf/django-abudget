@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.conf import settings
 
@@ -74,6 +76,30 @@ class TransactionCategory(models.Model):
         return result
 
 
+class FilterByDateManager(models.Manager):
+    def filter_by_date(self, request):
+        queryset = self.get_queryset()
+        filter_by = request.session.get('filter_by', {'date': 'this_month'})
+        filter_by_date = filter_by.get('date', 'this_month')
+        if filter_by_date == 'this_month':
+            today = datetime.date.today()
+            first_day = today.replace(day=1)
+            last_day = (first_day + datetime.timedelta(days=45)).replace(day=1)
+            queryset = queryset.filter(
+                date__gte=first_day,
+                date__lte=last_day
+            )
+        elif filter_by_date == 'prev_month':
+            today = datetime.date.today()
+            last_day = today.replace(day=1) - datetime.timedelta(days=1)
+            first_day = (last_day - datetime.timedelta(days=10)).replace(day=1)
+            queryset = queryset.filter(
+                date__gte=first_day,
+                date__lte=last_day
+            )
+        return queryset
+
+
 class Transaction(TransactionBase):
     budget = models.ForeignKey('Budget')
     category = models.ForeignKey(
@@ -81,6 +107,8 @@ class Transaction(TransactionBase):
         blank=True, null=True, default=None,
         on_delete=models.SET_DEFAULT
     )
+
+    objects = FilterByDateManager()
 
     class Meta:
         ordering = ('-date',)
@@ -101,6 +129,8 @@ class IncomeCategory(models.Model):
 class Income(TransactionBase):
     category = models.ForeignKey('IncomeCategory', blank=True, null=True, default=None, on_delete=models.SET_DEFAULT)
     budget = models.ForeignKey('Budget')
+
+    objects = FilterByDateManager()
 
     class Meta:
         ordering = ('-date',)

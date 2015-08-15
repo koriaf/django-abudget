@@ -23,6 +23,9 @@ $(document).bind('ready', function() {
     });
 
     $(".transaction-item .remove-transaction").bind('click', function() {
+        if (!confirm('Sure?')) {
+            return;
+        }
         var $th = $(this);
         var transaction_id = $th.data('transaction-id');
         var request_payload = {
