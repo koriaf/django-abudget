@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Stat{% endblock %}
+
+{% block content %}
+    <div class='row'>
+        <h1 class="page-header">Stat</h1>
+    
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Spent by categories
+                </div>
+                <div class="panel-body">
+                    <table class='table'>
+                        <tr>
+                            <th>Category</th>
+                            <th>#count</th>
+                            <th>#amount</th>
+                        </tr>
+                        {% for category in spent_by_category_report_data %}
+                            {% if category.report_data.transactions_count > 0 %}
+                                <tr class='spent_by_categories_table_row' data-morris-index="{{ forloop.counter0 }}">
+                                    <td>{{ category }}</td>
+                                    <td class='righted'>{{ category.report_data.transactions_count }}</td>
+                                    <td class='righted'>{{ category.report_data.transactions_amount|intcomma }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    <div id='spent_by_categories_canvas'></div>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+
+        {% include "money/filter_by_block.tpl" %}
+
+    </div>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script>
+        $(document).bind('ready', function on_stat_page_load() {
+            var spent_by_categories_chart = Morris.Donut({
+                element: 'spent_by_categories_canvas',
+                data: [{% for cat in spent_by_category_report_data %}{% if cat.report_data.transactions_amount %} {
+                    label: "{{ cat }}",
+                    value: {{ cat.report_data.transactions_amount }}
+                },{% endif %}{% endfor %}],
+                resize: true
+            });
+
+            $("tr.spent_by_categories_table_row").bind('mouseover', function spent_by_categories_table_row_mouseover() {
+                var $th = $(this);
+                $th.parent().find('tr').css('background-color', '');
+                spent_by_categories_chart.select($th.data('morris-index'));
+                $th.css('background-color', 'whitesmoke');
+            });
+        });
+    </script>
+{% endblock %}

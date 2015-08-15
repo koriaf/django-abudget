@@ -56,7 +56,6 @@ class TransactionCategory(models.Model):
 
     def __str__(self):
         return self.get_title()
-        # return '[{}#{}] {}'.format(self.budget.id, self.budget.name, self.get_title())
 
     def get_title(self):
         if self.parent:
@@ -77,7 +76,11 @@ class TransactionCategory(models.Model):
 
 class Transaction(TransactionBase):
     budget = models.ForeignKey('Budget')
-    category = models.ForeignKey('TransactionCategory', blank=True, null=True,  default=None, on_delete=models.SET_DEFAULT)
+    category = models.ForeignKey(
+        'TransactionCategory',
+        blank=True, null=True, default=None,
+        on_delete=models.SET_DEFAULT
+    )
 
     class Meta:
         ordering = ('-date',)
