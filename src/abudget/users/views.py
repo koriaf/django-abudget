@@ -1,9 +1,12 @@
+import datetime
+
 from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import models
 from django.views.generic import TemplateView, CreateView
 from django.shortcuts import redirect
+from django.utils import timezone
 
 from abudget.money.models import TransactionCategory, Transaction, Income
 from abudget.users.forms import CreateTransactionCategoryForm
@@ -74,8 +77,38 @@ class UserStatView(LoginRequiredMixin, TemplateView):
             'stat_balance': stat_balance,
         }
 
+    def get_data_by_months(self):
+        months = []
+        today = timezone.now().date().replace(day=15)
+        year_ago = today - datetime.timedelta(days=365)
+        while today > year_ago:
+            month_data = {
+                'name': today.strftime("%B %Y"),
+                'income': Income.objects.filter(
+                    budget=self.request.budget,
+                    date__year=today.year,
+                    date__month=today.month,
+                ).aggregate(models.Sum('amount'))['amount__sum'] or 0,
+                'spent': Transaction.objects.filter(
+                    budget=self.request.budget,
+                    date__year=today.year,
+                    date__month=today.month,
+                ).aggregate(models.Sum('amount'))['amount__sum'] or 0,
+                'balance': 0,
+            }
+            month_data['balance'] = month_data['income'] - month_data['spent']
+            month_data['income'] = round(month_data['income'])
+            month_data['spent'] = round(month_data['spent'])
+            month_data['balance'] = round(month_data['balance'])
+            months.append(month_data)
+            today -= datetime.timedelta(
+                days=30
+            )
+        return months
+
     def get_context_data(self, *args, **kwargs):
         context = super(UserStatView, self).get_context_data(*args, **kwargs)
         context['spent_by_category_report_data'] = self.get_spent_by_category_report_data()
         context['total_amounts'] = self.get_total_amounts()
+        context['data_by_months'] = self.get_data_by_months()
         return context

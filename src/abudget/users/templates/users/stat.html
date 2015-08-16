@@ -64,6 +64,32 @@
 
         {% include "money/filter_by_block.tpl" %}
 
+        <div class='col-lg-3'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> By months
+                </div>
+                <div class="panel-body">
+                    <table class='table table-striped'>
+                        <tr>
+                            <th>Month</th>
+                            <th>Income</th>
+                            <th>Spent</th>
+                            <th>Balance</th>
+                        </tr>
+                        {% for month_data in data_by_months %}
+                            <tr>
+                                <td>{{ month_data.name }}</td>
+                                <td class='righted'>{{ month_data.income|intcomma }}</td>
+                                <td class='righted'>{{ month_data.spent|intcomma }}</td>
+                                <td class='righted'>{{ month_data.balance|intcomma }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 
