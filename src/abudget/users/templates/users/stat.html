@@ -15,6 +15,7 @@
                 <div class="panel-body">
                     <table class='table'>
                         <tr>
+                            <td></td>
                             <th>Category</th>
                             <th>#count</th>
                             <th>#amount</th>
@@ -22,6 +23,7 @@
                         {% for category in spent_by_category_report_data %}
                             {% if category.report_data.transactions_count > 0 %}
                                 <tr class='spent_by_categories_table_row' data-morris-index="{{ forloop.counter0 }}" data-morris-display="true" data-morris-title="{{ category }}" data-morris-value="{{ category.report_data.transactions_amount }}">
+                                    <td><label class='label label-info hideshow-label'>hide</label></td>
                                     <td class='title'>{{ category }}</td>
                                     <td class='righted'>{{ category.report_data.transactions_count }}</td>
                                     <td class='righted' class='value'>{{ category.report_data.transactions_amount|intcomma }}</td>
@@ -72,14 +74,17 @@
                 $th.css('background-color', 'whitesmoke');
             });
 
-            $("tr.spent_by_categories_table_row").bind('click', function spent_by_categories_table_row_click() {
+            $("tr.spent_by_categories_table_row .hideshow-label").bind('click', function spent_by_categories_table_row_click() {
                 var $th = $(this);
-                if ($th.data('morris-display') == true) {
-                    $th.data('morris-display', 'false');
-                    $th.find('td').css('color', 'silver');
+                var $tr = $th.parent().parent();  // parent <tr>
+                if ($tr.data('morris-display') == true) {
+                    $tr.data('morris-display', false);
+                    $tr.find('td').css('color', 'silver');
+                    $th.text('show');
                 } else {
-                    $th.data('morris-display', 'true');
-                    $th.find('td').css('color', 'black');
+                    $tr.data('morris-display', true);
+                    $tr.find('td').css('color', 'black');
+                    $th.text('hide');
                 };
                 spent_by_categories_chart.setData(prepare_spent_by_categories_data());
             });
