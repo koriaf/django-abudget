@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 # TODO: it's bad bad place for this, move it somewhere
 DEFAULT_FILTER_BY_DATE = {
@@ -43,7 +44,7 @@ class TransactionBase(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=300, blank=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
-    date = models.DateTimeField(db_index=True, default=datetime.datetime.now)
+    date = models.DateTimeField(db_index=True, default=timezone.now)
 
     class Meta:
         abstract = True
@@ -85,7 +86,9 @@ class TransactionCategory(models.Model):
 
 class FilterByDateManager(models.Manager):
     def filter_by_date(self, request):
+        'filter out all objects, which have date not in range from request.session.filter_by'
         queryset = self.get_queryset()
+        current_timezone = timezone.get_current_timezone()
         filter_by = request.session.get(
             'filter_by',
             DEFAULT_FILTER_BY_DATE
@@ -93,17 +96,19 @@ class FilterByDateManager(models.Manager):
         filter_by_date = filter_by.get('date', 'this_month')
         if filter_by_date == 'this_month' and filter_by.get('date_from') is None:
             # first run after login
-            today = datetime.date.today()
+            today = timezone.now().date()
             first_day = today.replace(day=1)
             last_day = (first_day + datetime.timedelta(days=45)).replace(day=1) - datetime.timedelta(days=1)
             filter_by['date_from'] = first_day.strftime("%Y-%m-%d")
             filter_by['date_to'] = last_day.strftime("%Y-%m-%d")
         if filter_by_date != 'from_the_beginning':
-            first_day = filter_by.get('date_from')
+            first_day = datetime.datetime.strptime(filter_by.get('date_from'), "%Y-%m-%d")
             last_day = datetime.datetime.strptime(
                 filter_by.get('date_to') or '',
                 "%Y-%m-%d"
             ) + datetime.timedelta(days=1)
+            first_day = current_timezone.localize(first_day)
+            last_day = current_timezone.localize(last_day)
             if first_day:
                 queryset = queryset.filter(
                     date__gte=first_day,

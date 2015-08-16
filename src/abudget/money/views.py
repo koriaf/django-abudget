@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, View
 from django.shortcuts import redirect
+from django.utils import timezone
 
 from .forms import TransactionForm, IncomeForm
 from .models import Transaction, Income, DEFAULT_FILTER_BY_DATE
@@ -100,14 +101,19 @@ class IncomeCreateView(LoginRequiredMixin, CreateView):
 
 
 class UpdateFilterView(View):
+    '''
+    Sets request.session.filter_by corresponding to user input - date range, in fact
+    '''
 
     def post(self, request, *args, **kwargs):
         redirect_url = request.POST.get('redirect_to')
-        today = datetime.date.today()
+        today = timezone.now().date()
 
         filter_by = request.session.get('filter_by', DEFAULT_FILTER_BY_DATE)
-
         filter_by_date = request.POST.get('date', 'this_month')
+
+        first_day = None
+        last_day = None
 
         if filter_by_date == 'this_month':
             first_day = today.replace(day=1)
@@ -121,18 +127,21 @@ class UpdateFilterView(View):
             try:
                 first_day = datetime.datetime.strptime(request.POST.get('date_from'), "%Y-%m-%d")
             except (ValueError, TypeError):
-                first_day = datetime.date.today()
+                first_day = timezone.now().date()
             try:
                 last_day = datetime.datetime.strptime(request.POST.get('date_to'), "%Y-%m-%d")
             except (ValueError, TypeError):
-                last_day = datetime.date.today()
+                last_day = timezone.now().date()
 
         filter_by['date'] = filter_by_date
-        filter_by['date_from'] = first_day.strftime("%Y-%m-%d")
-        filter_by['date_to'] = last_day.strftime("%Y-%m-%d")
+        if first_day:
+            first_day = first_day.strftime("%Y-%m-%d")
+        if last_day:
+            last_day = last_day.strftime("%Y-%m-%d")
+        filter_by['date_from'] = first_day
+        filter_by['date_to'] = last_day
 
         request.session['filter_by'] = filter_by
-        print(filter_by)
         request.session.modified = True
         if not redirect_url[0] == '/':
             raise Exception()
