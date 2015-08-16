@@ -52,3 +52,9 @@
 .transaction-add-form .settings-panel input {
     width: 100%;
 }
+
+.spent-by-categories-totals .badge {
+    font-size: 12pt;
+    color: black;
+    background-color: whitesmoke;
+}

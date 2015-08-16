@@ -31,10 +31,35 @@
                             {% endif %}
                         {% endfor %}
                     </table>
-                    <div id='spent_by_categories_canvas'></div>
+                    
                 </div>
             </div>
             <!-- /.panel -->
+        </div>
+
+        <div class='col-lg-3'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> Spent by categories graph
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group spent-by-categories-totals">
+                      <li class="list-group-item">
+                        <span class="badge">{{ total_amounts.stat_income|intcomma }}</span>
+                        Total income
+                      </li>
+                      <li class="list-group-item">
+                        <span class="badge">{{ total_amounts.stat_spent|intcomma }}</span>
+                        Total spent
+                      </li>
+                      <li class="list-group-item">
+                        <span class="badge">{{ total_amounts.stat_balance|intcomma }}</span>
+                        Total balance
+                      </li>
+                    </ul>
+                    <div id='spent_by_categories_canvas'></div>
+                </div>
+            </div>
         </div>
 
         {% include "money/filter_by_block.tpl" %}

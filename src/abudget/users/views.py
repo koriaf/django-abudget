@@ -5,7 +5,7 @@ from django.db import models
 from django.views.generic import TemplateView, CreateView
 from django.shortcuts import redirect
 
-from abudget.money.models import TransactionCategory, Transaction
+from abudget.money.models import TransactionCategory, Transaction, Income
 from abudget.users.forms import CreateTransactionCategoryForm
 
 
@@ -58,7 +58,24 @@ class UserStatView(LoginRequiredMixin, TemplateView):
         categories = sorted(categories, key=lambda x: x.report_data['transactions_amount'], reverse=True)
         return categories
 
+    def get_total_amounts(self):
+        stat_spent = Transaction.objects.filter_by_date(self.request).filter(
+            budget=self.request.budget,
+        ).aggregate(models.Sum('amount'))['amount__sum'] or 0
+
+        stat_income = Income.objects.filter_by_date(self.request).filter(
+            budget=self.request.budget,
+        ).aggregate(models.Sum('amount'))['amount__sum'] or 0
+
+        stat_balance = stat_income - stat_spent
+        return {
+            'stat_spent': stat_spent,
+            'stat_income': stat_income,
+            'stat_balance': stat_balance,
+        }
+
     def get_context_data(self, *args, **kwargs):
         context = super(UserStatView, self).get_context_data(*args, **kwargs)
         context['spent_by_category_report_data'] = self.get_spent_by_category_report_data()
+        context['total_amounts'] = self.get_total_amounts()
         return context
