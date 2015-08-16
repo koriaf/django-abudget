@@ -21,7 +21,13 @@
                         {% csrf_token %}
                         <input type='hidden' name='category' value='' id='id_selected_category' />
 
-                        {{ new_transaction_form.errors }}
+                        <!-- <button type='button' class='show_settings_panel'><i class='glyphicon glyphicon-cog'></i></button> -->
+
+                        <div class="panel panel-default settings-panel">
+                            <div class="panel-body">
+                                <input type='text' name='date' value="{% now 'Y-m-d' %}" />
+                            </div>
+                        </div>
 
                         {% for toplevel_category in request.budget.get_toplevel_categories %}
                             <div class="btn-group" id='transaction_category_selector'>

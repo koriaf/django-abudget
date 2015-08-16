@@ -1,3 +1,5 @@
+import datetime
+
 from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.db.models import Sum
@@ -6,7 +8,7 @@ from django.views.generic import TemplateView, CreateView, View
 from django.shortcuts import redirect
 
 from .forms import TransactionForm, IncomeForm
-from .models import Transaction, Income
+from .models import Transaction, Income, DEFAULT_FILTER_BY_DATE
 
 
 class TransactionsView(LoginRequiredMixin, TemplateView):
@@ -101,9 +103,36 @@ class UpdateFilterView(View):
 
     def post(self, request, *args, **kwargs):
         redirect_url = request.POST.get('redirect_to')
-        filter_by = request.session.get('filter_by', {'date': 'this_month'})
-        filter_by['date'] = request.POST.get('date', 'this_month')
+        today = datetime.date.today()
+
+        filter_by = request.session.get('filter_by', DEFAULT_FILTER_BY_DATE)
+
+        filter_by_date = request.POST.get('date', 'this_month')
+
+        if filter_by_date == 'this_month':
+            first_day = today.replace(day=1)
+            last_day = (first_day + datetime.timedelta(days=45)).replace(day=1) - datetime.timedelta(days=1)
+        elif filter_by_date == 'prev_month':
+            last_day = today.replace(day=1) - datetime.timedelta(days=1)
+            first_day = (last_day - datetime.timedelta(days=10)).replace(day=1)
+        elif filter_by_date == 'date_custom':
+            # disallow wrong data.
+            # TODO: client-side date check
+            try:
+                first_day = datetime.datetime.strptime(request.POST.get('date_from'), "%Y-%m-%d")
+            except (ValueError, TypeError):
+                first_day = datetime.date.today()
+            try:
+                last_day = datetime.datetime.strptime(request.POST.get('date_to'), "%Y-%m-%d")
+            except (ValueError, TypeError):
+                last_day = datetime.date.today()
+
+        filter_by['date'] = filter_by_date
+        filter_by['date_from'] = first_day.strftime("%Y-%m-%d")
+        filter_by['date_to'] = last_day.strftime("%Y-%m-%d")
+
         request.session['filter_by'] = filter_by
+        print(filter_by)
         request.session.modified = True
         if not redirect_url[0] == '/':
             raise Exception()

@@ -30,12 +30,12 @@
 
                     <br />
 
-                    <form action="#" method='post' class='form-inline'>
+                    <form action="#" method='post' class='form-inline' onSubmit='return confirm("Sure?");'>
                         {% csrf_token %}
                         <ul class="list-group">
                             {% for cat in request.budget.transactioncategory_set.all %}
                                 <li class="list-group-item">
-                                    [{{ cat.id }}] {{ cat }}
+                                    {{ cat }}
                                     <button class="btn btn-danger btn-xs" type='submit' name='delete_category' value='{{ cat.id }}'>delete</button>
                                 </li>
                             {% endfor %}

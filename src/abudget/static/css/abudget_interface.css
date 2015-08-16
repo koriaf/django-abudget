@@ -34,3 +34,21 @@
     color: #700;
     cursor: pointer;
 }
+
+.transaction-add-form .show_settings_panel {
+    float: right;
+}
+
+.transaction-add-form .settings-panel {
+    display: block;
+    width: 300px;
+    float: right;
+}
+
+.transaction-add-form .settings-panel .panel-body {
+    padding: 5px;
+}
+
+.transaction-add-form .settings-panel input {
+    width: 100%;
+}

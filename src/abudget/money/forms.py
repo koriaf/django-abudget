@@ -6,7 +6,7 @@ from .models import Transaction, Income
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ('category', 'title', 'amount')
+        fields = ('category', 'title', 'amount', 'date')
 
     def __init__(self, budget=None, creator=None, *args, **kwargs):
         super(TransactionForm, self).__init__(*args, **kwargs)

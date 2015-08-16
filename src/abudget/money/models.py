@@ -3,6 +3,13 @@ import datetime
 from django.db import models
 from django.conf import settings
 
+# TODO: it's bad bad place for this, move it somewhere
+DEFAULT_FILTER_BY_DATE = {
+    'date': 'this_month',
+    'date_from': None,
+    'date_to': None,
+}
+
 
 class Budget(models.Model):
     name = models.CharField(max_length=100)
@@ -36,7 +43,7 @@ class TransactionBase(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=300, blank=True)
     amount = models.DecimalField(max_digits=11, decimal_places=2)
-    date = models.DateTimeField(auto_now_add=True, db_index=True)
+    date = models.DateTimeField(db_index=True, default=datetime.datetime.now)
 
     class Meta:
         abstract = True
@@ -79,24 +86,32 @@ class TransactionCategory(models.Model):
 class FilterByDateManager(models.Manager):
     def filter_by_date(self, request):
         queryset = self.get_queryset()
-        filter_by = request.session.get('filter_by', {'date': 'this_month'})
+        filter_by = request.session.get(
+            'filter_by',
+            DEFAULT_FILTER_BY_DATE
+        )
         filter_by_date = filter_by.get('date', 'this_month')
-        if filter_by_date == 'this_month':
+        if filter_by_date == 'this_month' and filter_by.get('date_from') is None:
+            # first run after login
             today = datetime.date.today()
             first_day = today.replace(day=1)
-            last_day = (first_day + datetime.timedelta(days=45)).replace(day=1)
-            queryset = queryset.filter(
-                date__gte=first_day,
-                date__lte=last_day
-            )
-        elif filter_by_date == 'prev_month':
-            today = datetime.date.today()
-            last_day = today.replace(day=1) - datetime.timedelta(days=1)
-            first_day = (last_day - datetime.timedelta(days=10)).replace(day=1)
-            queryset = queryset.filter(
-                date__gte=first_day,
-                date__lte=last_day
-            )
+            last_day = (first_day + datetime.timedelta(days=45)).replace(day=1) - datetime.timedelta(days=1)
+            filter_by['date_from'] = first_day.strftime("%Y-%m-%d")
+            filter_by['date_to'] = last_day.strftime("%Y-%m-%d")
+        if filter_by_date != 'from_the_beginning':
+            first_day = filter_by.get('date_from')
+            last_day = datetime.datetime.strptime(
+                filter_by.get('date_to') or '',
+                "%Y-%m-%d"
+            ) + datetime.timedelta(days=1)
+            if first_day:
+                queryset = queryset.filter(
+                    date__gte=first_day,
+                )
+            if last_day:
+                queryset = queryset.filter(
+                    date__lte=last_day
+                )
         return queryset
 
 
