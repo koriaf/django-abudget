@@ -24,30 +24,33 @@
 <body>
     <div id="wrapper">
         <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">ABudget</a>
-            </div>
-            <!-- /.navbar-header -->
 
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li><a href="{% url 'money:transactions' %}"><i class="fa fa-th  fa-fw"></i> Transactions</a></li>
-                        <li><a href="{% url 'money:income' %}"><i class="fa fa-smile-o fa-fw"></i> Income</a></li>
-                        <li><a href="{% url 'users:stat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> Statistics</a></li>
-                        <li><a href="{% url 'users:settings' %}"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
-                    </ul>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">ABudget</a>
                 </div>
-                <!-- /.sidebar-collapse -->
-            </div>
-            <!-- /.navbar-static-side -->
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    {% if request.user.is_authenticated %}
+                        <ul class="navbar-nav nav">
+                            <li><a href="{% url 'money:transactions' %}"><i class="fa fa-th  fa-fw"></i> Transactions</a></li>
+                            <li><a href="{% url 'money:income' %}"><i class="fa fa-smile-o fa-fw"></i> Income</a></li>
+                            <li><a href="{% url 'users:stat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> Statistics</a></li>
+                            <li><a href="{% url 'users:settings' %}"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
+                        </ul>
+                    {% endif %}
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'accounts:logout' %}?next=/">Logout</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
         </nav>
 
         <div id="page-wrapper" class='container-fluid'>
@@ -75,7 +78,6 @@
     
     <script src="/static/bower_components/jquery.cookie/jquery.cookie.js"></script>
     <!-- Custom Theme JavaScript -->
-    <script src="/static/js/sb-admin-2.js"></script>
     <script src="/static/js/abudget_interface.js"></script>
     {% block extra_js %}{% endblock %}
 </body>

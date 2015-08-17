@@ -6,6 +6,6 @@ urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='money:transactions', permanent=False)),
     url(r'^money/', include('abudget.money.urls', namespace='money')),
     url(r'^users/', include('abudget.users.urls', namespace='users')),
-    url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls', namespace='accounts')),
     url(r'^admin/', include(admin.site.urls)),
 ]
