@@ -1,4 +1,7 @@
+import datetime
+
 from django import forms
+from django.utils import timezone
 
 from .models import Transaction, Income
 
@@ -19,6 +22,8 @@ class TransactionForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         self.instance.budget = self.budget
         self.instance.creator = self.creator
+        # who cares about time?..
+        self.instance.date = datetime.datetime.combine(self.instance.date, timezone.now().time())
         return super(TransactionForm, self).save(*args, **kwargs)
 
 

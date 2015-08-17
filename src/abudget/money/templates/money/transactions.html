@@ -93,7 +93,7 @@
                             <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
                             <span class='category col-lg-6'>{{ trans.category.get_title }}</span>
                             <span class='amount col-lg-3'>{{ trans.amount }}</span>
-                            <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>
+                            <span class='date col-lg-2'>{{ trans.date.date|naturalday }}</span>
                             <span class='title col-lg-12'>{{ trans.title }}</span>
                         </div>
                     {% endfor %}

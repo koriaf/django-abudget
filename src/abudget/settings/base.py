@@ -80,7 +80,8 @@ DATETIME_FORMAT = "d.m.Y H:i"
 TIME_FORMAT = "H:i"
 
 USE_TZ = True
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
+
 
 STATIC_URL = '/static/'
 
