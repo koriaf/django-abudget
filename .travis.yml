@@ -2,6 +2,6 @@ language: python
 python:
   - "3.4"
 # command to install dependencies
-install: "pip install -r system/requirements.txt"
+install: "pip install -r system/requirements.test.txt"
 # command to run tests
 script: ./test-dev.sh

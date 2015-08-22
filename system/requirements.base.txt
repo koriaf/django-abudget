@@ -1,5 +1,4 @@
 Django
-psycopg2
 django-crispy-forms
 django-braces
 django-widget-tweaks
