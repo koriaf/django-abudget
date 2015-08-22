@@ -4,4 +4,4 @@ python:
 # command to install dependencies
 install: "pip install -r system/requirements.txt"
 # command to run tests
-script: test-dev.sh
+script: ./test-dev.sh
