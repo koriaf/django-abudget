@@ -2,7 +2,7 @@ django-abudget
 ==============
 Just another home budget application, written in Django. Just because I haven't found something perfectly fit. And I definetly don't like then someone have all my finance information, so, this project is being written for people like me, who can manage to start it on local server for personal use. Or ask someone who can :-)
 
-| |Build Status| |Coverage Status|
+| |Build Status|
 
 It uses Python 3.4 and currently does not require any particular database backend.
 
@@ -30,3 +30,7 @@ Deployment
 ----------
 
 ...
+
+
+.. |Build Status| image:: https://travis-ci.org/koriaf/django-abudget.svg?branch=master
+   :target: https://travis-ci.org/koriaf/django-abudget
