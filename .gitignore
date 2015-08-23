@@ -1,11 +1,21 @@
+# common python files
 *~
 *#
 *.pyc
 *.sqlite
 .idea
 system/venv
+
+# local settings and media data
 local.py
 prod.py
 var
 media
 bower_components
+
+# deployment scripts and configs
+system/conf/ssl
+system/conf
+deploy*
+system/deploy*
+postinstall*
