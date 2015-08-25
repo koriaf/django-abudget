@@ -16,9 +16,18 @@ class TransactionForm(forms.ModelForm):
         super(TransactionForm, self).__init__(*args, **kwargs)
         self.budget = budget
         self.creator = creator
+        if self.budget and not self.budget.viewable_by(self.creator):
+            raise Exception("Wow")
         self.fields['title'].widget.attrs['placeholder'] = _('Title...')
         self.fields['amount'].widget.attrs['placeholder'] = _('Amount...')
         return
+
+    def clean_category(self, *args, **kwargs):
+        category = self.cleaned_data.get('category')
+        if category and category.budget != self.budget:
+            # TODO
+            raise Exception('Wow')
+        return category
 
     def save(self, *args, **kwargs):
         self.instance.budget = self.budget
@@ -33,13 +42,23 @@ class IncomeForm(forms.ModelForm):
         model = Income
         fields = ('category', 'title', 'amount')
 
-    def __init__(self, budget=None, creator=None, *args, **kwargs):
+    def __init__(self, budget, creator=None, *args, **kwargs):
         super(IncomeForm, self).__init__(*args, **kwargs)
         self.budget = budget
         self.creator = creator
+        if self.budget and not self.budget.viewable_by(self.creator):
+            raise Exception("Wow")
         self.fields['title'].widget.attrs['placeholder'] = _('Title...')
         self.fields['amount'].widget.attrs['placeholder'] = _('Amount...')
+        self.fields['category'].queryset = self.budget.incomecategory_set.all()
         return
+
+    def clean_category(self, *args, **kwargs):
+        category = self.cleaned_data.get('category')
+        if category and category.budget != self.budget:
+            # TODO
+            raise Exception('Wow')
+        return category
 
     def save(self, *args, **kwargs):
         self.instance.budget = self.budget

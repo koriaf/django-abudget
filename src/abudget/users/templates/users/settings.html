@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}Settings{% endblock %}
+{% block title %}{% trans 'Settings' %}{% endblock %}
 
 {% block content %}
     <div class='row'>
-        <h1 class="page-header">Settings</h1>
+        <h1 class="page-header">{% trans 'Settings' %}</h1>
     
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Transactions categories
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'Transactions categories' %}
                 </div>
                 <div class="panel-body">
                     <form action="{% url 'users:settings_category_add' %}" method='post' class='form-inline'>
                         {% csrf_token %}
                         <div class="form-group">
-                            <input type="text" class="form-control" id="id_category_name" placeholder="new category name" name='name' required>
+                            <input type="text" class="form-control" id="id_category_name" placeholder="{% trans 'new category name' %}" name='name' required>
                         </div>
                         <div class="form-group">
                             <select name='parent' class="form-control" >
@@ -26,7 +26,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-default">Add category</button>
+                        <button type="submit" class="btn btn-default">{% trans 'Add category' %}</button>
                     </form>
 
                     <br />
@@ -42,6 +42,33 @@
                             {% endfor %}
                         </ul>
                     </form>
+                </div>
+            </div>
+            <!-- /.panel -->
+        </div>
+
+
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'Budgets' %}
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <form action="{% url 'users:settings_budget_activate' %}" method='post' class='form-inline'>
+                            {% csrf_token %}
+                            <ul class="list-group">
+                            {% for budget in budgets %}
+                                <li class="list-group-item">
+                                    {{ budget }}
+                                    {% if request.budget != budget %}
+                                        <button class="btn btn-primary btn-sm" type='submit' name='budget' value='{{ budget.id }}'>{% trans 'Activate' %}</button>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        </form>
+                    </table>
                 </div>
             </div>
             <!-- /.panel -->

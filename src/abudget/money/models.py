@@ -45,9 +45,16 @@ class Budget(models.Model):
             result += topcat.get_subcategories_recursive_list()
         return result
 
+    def viewable_by(self, user):
+        if self.owner != user and user not in self.users:
+            # TODO: add logging here
+            return False
+        return True
+
 
 class TransactionBase(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Creator'))
+    budget = models.ForeignKey('Budget', verbose_name=_('Budget'))
     title = models.CharField(_('Title'), max_length=300, blank=True)
     amount = models.DecimalField(_('Amount'), max_digits=11, decimal_places=2)
     date = models.DateTimeField(_('Date'), db_index=True, default=timezone.now)
@@ -91,6 +98,11 @@ class TransactionCategory(models.Model):
             result += subcat.get_subcategories_recursive_list(level + 1)
         return result
 
+    def save(self, *args, **kwargs):
+        if self.parent and self.parent.budget != self.budget:
+            raise Exception("Parent category budget not equal to self budget for {}!".format(self))
+        return super(TransactionCategory, self).save(*args, **kwargs)
+
 
 class FilterByDateManager(models.Manager):
     def filter_by_date(self, request):
@@ -129,7 +141,6 @@ class FilterByDateManager(models.Manager):
 
 
 class Transaction(TransactionBase):
-    budget = models.ForeignKey('Budget', verbose_name=_('Budget'))
     category = models.ForeignKey(
         'TransactionCategory',
         verbose_name=_('Category'),
@@ -162,7 +173,6 @@ class Income(TransactionBase):
         blank=True, null=True, default=None,
         on_delete=models.SET_DEFAULT
     )
-    budget = models.ForeignKey('Budget')
 
     objects = FilterByDateManager()
 

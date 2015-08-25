@@ -48,9 +48,6 @@ class TransactionsCreateView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self, *args, **kwargs):
         form_kwargs = super(TransactionsCreateView, self).get_form_kwargs(*args, **kwargs)
-
-        # TODO: right workflow here
-        # TODO: error handling here
         form_kwargs['budget'] = self.request.budget
         form_kwargs['creator'] = self.request.user
         return form_kwargs
@@ -76,7 +73,7 @@ class IncomeView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(IncomeView, self).get_context_data(*args, **kwargs)
 
-        context['new_income_form'] = IncomeForm()
+        context['new_income_form'] = IncomeForm(budget=self.request.budget, creator=self.request.user)
         context['transactions'] = Income.objects.filter_by_date(self.request).filter(
             budget=self.request.budget,
         )
