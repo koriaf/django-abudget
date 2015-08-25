@@ -63,3 +63,19 @@
     color: black;
     background-color: whitesmoke;
 }
+
+.category_level_1 {
+    padding-left: 0px;
+}
+.category_level_2 {
+    padding-left: 20px;
+}
+.category_level_3 {
+    padding-left: 40px;
+}
+.category_level_4 {
+    padding-left: 60px;
+}
+.category_level_5 {
+    padding-left: 80px;
+}

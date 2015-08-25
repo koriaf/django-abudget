@@ -80,14 +80,15 @@ class TransactionCategory(models.Model):
         else:
             return self.name
 
-    def get_subcategories_recursive_list(self):
+    def get_subcategories_recursive_list(self, level=1):
         result = []
         subcategories_first_level = TransactionCategory.objects.filter(
             parent=self
         )
         for subcat in subcategories_first_level:
+            subcat.level = level
             result.append(subcat)
-            result += subcat.get_subcategories_recursive_list()
+            result += subcat.get_subcategories_recursive_list(level + 1)
         return result
 
 

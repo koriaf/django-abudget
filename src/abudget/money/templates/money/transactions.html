@@ -35,7 +35,7 @@
                                 <ul class="dropdown-menu">
                                     <li class='category_item' data-category-id='{{ category.id }}'><a href="#">{{ toplevel_category }}</a></li>
                                     {% for category in toplevel_category.get_subcategories_recursive_list %}
-                                        <li class='category_item' data-category-id='{{ category.id }}'><a>{{ category.get_title }}</a></li>
+                                        <li class='category_item category_level_{{ category.level }}' data-category-id='{{ category.id }}'><a>{{ category.name }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
