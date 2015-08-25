@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-25 19:05+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: money/forms.py:19 money/forms.py:40
+msgid "Title..."
+msgstr "Название"
+
+#: money/forms.py:20 money/forms.py:41
+msgid "Amount..."
+msgstr "Сумма"
+
+#: money/models.py:17 money/models.py:69 money/models.py:151
+msgid "Name"
+msgstr "Имя"
+
+#: money/models.py:18
+msgid "Owner"
+msgstr "Владелец"
+
+#: money/models.py:21
+msgid "Users"
+msgstr "Пользователи"
+
+#: money/models.py:50
+msgid "Creator"
+msgstr "Создатель"
+
+#: money/models.py:51
+msgid "Title"
+msgstr "Название"
+
+#: money/models.py:52
+msgid "Amount"
+msgstr "Сумма"
+
+#: money/models.py:53
+msgid "Date"
+msgstr "дата"
+
+#: money/models.py:61 money/models.py:131 money/models.py:150
+msgid "Budget"
+msgstr "Бюджет"
+
+#: money/models.py:64
+msgid "Parent"
+msgstr "Родитель"
+
+#: money/models.py:134 users/templates/users/stat.html:20
+msgid "Category"
+msgstr "Категория"
+
+#: money/models.py:160 money/templates/money/income.html:7
+#: money/templates/money/income.html:12
+#: money/templates/money/transactions.html:63 templates/base.html:44
+#: users/templates/users/stat.html:77
+msgid "Income"
+msgstr "Приход"
+
+#: money/templates/money/filter_by_block.html:6
+msgid "Filter by"
+msgstr "Фильтровать"
+
+#: money/templates/money/filter_by_block.html:13
+msgid "This month"
+msgstr "Предыдущий месяц"
+
+#: money/templates/money/filter_by_block.html:14
+msgid "Previous month"
+msgstr "Предыдущий месяц"
+
+#: money/templates/money/filter_by_block.html:15
+msgid "From the beginning"
+msgstr "С начала времён"
+
+#: money/templates/money/filter_by_block.html:16
+msgid "Custom range"
+msgstr "Свой диапазон"
+
+#: money/templates/money/filter_by_block.html:20
+msgid "from date (empty for today)"
+msgstr "дата начала (пустая если сегодня)"
+
+#: money/templates/money/filter_by_block.html:21
+msgid "to date (empty for today)"
+msgstr "дата конца (пустая если сегодня)"
+
+#: money/templates/money/filter_by_block.html:24
+msgid "Apply"
+msgstr "Применить"
+
+#: money/templates/money/income.html:17
+msgid "Enter Income Transaction"
+msgstr "Внести в приход"
+
+#: money/templates/money/income.html:25
+msgid "Save income"
+msgstr "Сохранить приход"
+
+#: money/templates/money/transactions.html:7
+#: money/templates/money/transactions.html:12 templates/base.html:43
+msgid "Transactions"
+msgstr "Транзакции"
+
+#: money/templates/money/transactions.html:17
+msgid "Enter transaction"
+msgstr "Внести транзакцию"
+
+#: money/templates/money/transactions.html:48
+msgid "Save transaction"
+msgstr "Сохранить транзакцию"
+
+#: money/templates/money/transactions.html:58
+#: users/templates/users/stat.html:5 users/templates/users/stat.html.py:9
+msgid "Stat"
+msgstr "Статистика"
+
+#: money/templates/money/transactions.html:67
+#: users/templates/users/stat.html:78
+msgid "Spent"
+msgstr "Потрачено"
+
+#: money/templates/money/transactions.html:71
+#: users/templates/users/stat.html:79
+msgid "Balance"
+msgstr "Баланс"
+
+#: money/templates/money/transactions.html:86
+msgid "History"
+msgstr "История"
+
+#: templates/base.html:45
+msgid "Statistics"
+msgstr "Статистика"
+
+#: templates/base.html:46
+msgid "Settings"
+msgstr "Настройки"
+
+#: templates/base.html:51
+msgid "Logout"
+msgstr "Выход"
+
+#: users/templates/users/stat.html:14
+msgid "Spent by categories"
+msgstr "Затраты по категориям"
+
+#: users/templates/users/stat.html:21
+msgid "count"
+msgstr "количество"
+
+#: users/templates/users/stat.html:22
+msgid "amount"
+msgstr "сумма"
+
+#: users/templates/users/stat.html:44
+msgid "Spent by categories graph"
+msgstr "Расход по категориям, график"
+
+#: users/templates/users/stat.html:50
+msgid "Total income"
+msgstr "Общий приход"
+
+#: users/templates/users/stat.html:54
+msgid "Total spent"
+msgstr "Общий расход"
+
+#: users/templates/users/stat.html:58
+msgid "Total balance"
+msgstr "Общий баланс"
+
+#: users/templates/users/stat.html:71
+msgid "By months"
+msgstr "Этот месяц"
+
+#: users/templates/users/stat.html:76
+msgid "Month"
+msgstr "Месяц"

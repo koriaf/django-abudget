@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load i18n %}
 
-{% block title %}Stat{% endblock %}
+{% block title %}{% trans 'Stat' %}{% endblock %}
 
 {% block content %}
     <div class='row'>
-        <h1 class="page-header">Stat</h1>
+        <h1 class="page-header">{% trans 'Stat' %}</h1>
     
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Spent by categories
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'Spent by categories' %}
                 </div>
                 <div class="panel-body">
                     <table class='table'>
                         <tr>
                             <td></td>
-                            <th>Category</th>
-                            <th>#count</th>
-                            <th>#amount</th>
+                            <th>{% trans 'Category' %}</th>
+                            <th>#{% trans 'count' %}</th>
+                            <th>#{% trans 'amount' %}</th>
                         </tr>
                         {% for category in spent_by_category_report_data %}
                             {% if category.report_data.transactions_count > 0 %}
@@ -40,21 +41,21 @@
         <div class='col-lg-3'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Spent by categories graph
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'Spent by categories graph' %}
                 </div>
                 <div class="panel-body">
                     <ul class="list-group spent-by-categories-totals">
                       <li class="list-group-item">
                         <span class="badge">{{ total_amounts.stat_income|intcomma }}</span>
-                        Total income
+                        {% trans 'Total income' %}
                       </li>
                       <li class="list-group-item">
                         <span class="badge">{{ total_amounts.stat_spent|intcomma }}</span>
-                        Total spent
+                        {% trans 'Total spent' %}
                       </li>
                       <li class="list-group-item">
                         <span class="badge">{{ total_amounts.stat_balance|intcomma }}</span>
-                        Total balance
+                        {% trans 'Total balance' %}
                       </li>
                     </ul>
                     <div id='spent_by_categories_canvas'></div>
@@ -62,20 +63,20 @@
             </div>
         </div>
 
-        {% include "money/filter_by_block.tpl" %}
+        {% include "money/filter_by_block.html" %}
 
         <div class='col-lg-3'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> By months
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'By months' %}
                 </div>
                 <div class="panel-body">
                     <table class='table table-striped'>
                         <tr>
-                            <th>Month</th>
-                            <th>Income</th>
-                            <th>Spent</th>
-                            <th>Balance</th>
+                            <th>{% trans 'Month' %}</th>
+                            <th>{% trans 'Income' %}</th>
+                            <th>{% trans 'Spent' %}</th>
+                            <th>{% trans 'Balance' %}</th>
                         </tr>
                         {% for month_data in data_by_months %}
                             <tr>

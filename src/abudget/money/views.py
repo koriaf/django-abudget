@@ -146,3 +146,14 @@ class UpdateFilterView(View):
         if not redirect_url[0] == '/':
             raise Exception()
         return redirect(redirect_url)
+
+
+class IncomeRemoveView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        transaction = Income.objects.get(
+            id=request.POST.get('transaction_id'),
+            budget=request.budget
+        )
+        transaction.delete()
+        return HttpResponse('ok')

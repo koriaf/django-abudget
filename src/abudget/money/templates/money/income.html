@@ -4,17 +4,17 @@
 {% load humanize %}
 {% load widget_tweaks %}
 
-{% block title %}Income{% endblock %}
+{% block title %}{% trans 'Income' %}{% endblock %}
 
 {% block content %}
 
     <div class='row'>
-        <h1 class="page-header">Income</h1>
+        <h1 class="page-header">{% trans 'Income' %}</h1>
     
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bell fa-fw"></i> Enter Income Transaction
+                    <i class="fa fa-bell fa-fw"></i> {% trans 'Enter Income Transaction' %}
                 </div>
                 <div class="panel-body income-add-form">
                     <form action="{% url 'money:income_create' %}" method='post' class='form-horisontal' id='id_income_form'>
@@ -22,7 +22,7 @@
 
                         {{ new_income_form|crispy }}
 
-                        <button class='btn btn-primary' type='submit' id='id_income_form_submit'>Submit</button>
+                        <button class='btn btn-primary' type='submit' id='id_income_form_submit'>{% trans 'Save income' %}</button>
                     </form>
                 </div>
             </div>
@@ -32,7 +32,7 @@
         <div class='col-lg-6'>
             {% for trans in transactions %}
                 <div class='transaction-item row'>
-                    <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
+                    <i class='remove-income-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
                     <span class='category col-lg-6'>{{ trans.category }} ({{ trans.creator }})</span>
                     <span class='amount col-lg-3'>{{ trans.amount }}</span>
                     <span class='date col-lg-2'>{{ trans.date|naturalday }} {{ trans.date.time|time }}</span>

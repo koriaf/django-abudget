@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 # TODO: it's bad bad place for this, move it somewhere
 DEFAULT_FILTER_BY_DATE = {
@@ -13,9 +14,14 @@ DEFAULT_FILTER_BY_DATE = {
 
 
 class Budget(models.Model):
-    name = models.CharField(max_length=100)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='owned_budgets')
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='participated_budgets')
+    name = models.CharField(_('Name'), max_length=100)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Owner'), related_name='owned_budgets')
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        verbose_name=_('Users'),
+        blank=True,
+        related_name='participated_budgets'
+    )
 
     class Meta:
         ordering = ('id',)
@@ -41,10 +47,10 @@ class Budget(models.Model):
 
 
 class TransactionBase(models.Model):
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL)
-    title = models.CharField(max_length=300, blank=True)
-    amount = models.DecimalField(max_digits=11, decimal_places=2)
-    date = models.DateTimeField(db_index=True, default=timezone.now)
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Creator'))
+    title = models.CharField(_('Title'), max_length=300, blank=True)
+    amount = models.DecimalField(_('Amount'), max_digits=11, decimal_places=2)
+    date = models.DateTimeField(_('Date'), db_index=True, default=timezone.now)
 
     class Meta:
         abstract = True
@@ -52,14 +58,15 @@ class TransactionBase(models.Model):
 
 class TransactionCategory(models.Model):
     # TODO: orderable
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', verbose_name=_('Budget'))
     parent = models.ForeignKey(
         'self',
+        verbose_name=_('Parent'),
         blank=True, null=True, default=None,
         on_delete=models.SET_DEFAULT,
         related_name='children',
     )
-    name = models.CharField(max_length=200)
+    name = models.CharField(_('Name'), max_length=200)
 
     class Meta:
         ordering = ('id',)
@@ -121,9 +128,10 @@ class FilterByDateManager(models.Manager):
 
 
 class Transaction(TransactionBase):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', verbose_name=_('Budget'))
     category = models.ForeignKey(
         'TransactionCategory',
+        verbose_name=_('Category'),
         blank=True, null=True, default=None,
         on_delete=models.SET_DEFAULT
     )
@@ -139,15 +147,20 @@ class Transaction(TransactionBase):
 
 class IncomeCategory(models.Model):
     # TODO: orderable
-    budget = models.ForeignKey('Budget')
-    name = models.CharField(max_length=200)
+    budget = models.ForeignKey('Budget', verbose_name=_('Budget'))
+    name = models.CharField(_('Name'), max_length=200)
 
     def __str__(self):
         return self.name
 
 
 class Income(TransactionBase):
-    category = models.ForeignKey('IncomeCategory', blank=True, null=True, default=None, on_delete=models.SET_DEFAULT)
+    category = models.ForeignKey(
+        'IncomeCategory',
+        verbose_name=_('Income'),
+        blank=True, null=True, default=None,
+        on_delete=models.SET_DEFAULT
+    )
     budget = models.ForeignKey('Budget')
 
     objects = FilterByDateManager()

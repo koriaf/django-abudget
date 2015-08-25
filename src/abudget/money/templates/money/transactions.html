@@ -4,24 +4,22 @@
 {% load humanize %}
 {% load widget_tweaks %}
 
-{% block title %}Transactions{% endblock %}
+{% block title %}{% trans 'Transactions' %}{% endblock %}
 
 {% block content %}
 
     <div class='row'>
-        <h1 class="page-header">Transactions</h1>
+        <h1 class="page-header">{% trans 'Transactions' %}</h1>
     
         <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-plus-circle"></i> Enter transaction
+                    <i class="fa fa-plus-circle"></i> {% trans 'Enter transaction' %}
                 </div>
                 <div class="panel-body transaction-add-form">
                     <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
                         {% csrf_token %}
                         <input type='hidden' name='category' value='' id='id_selected_category' />
-
-                        <!-- <button type='button' class='show_settings_panel'><i class='glyphicon glyphicon-cog'></i></button> -->
 
                         <div class="panel panel-default settings-panel">
                             <div class="panel-body">
@@ -45,9 +43,9 @@
 
                         <p class="form-control-static" id="selected-category-field">...</p>
 
-                        <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="Amount..." type="text">
+                        <input class="numberinput form-control col-lg-6" id="id_amount" name="amount" placeholder="{% trans 'Amount' %}..." type="text">
                         {{ new_transaction_form.title|attr:"class:form-control"}}<br/>
-                        <button class='btn btn-primary big-button' type='submit' id='id_transaction_form_submit'>Submit</button>
+                        <button class='btn btn-primary big-button' type='submit' id='id_transaction_form_submit'>{% trans 'Save transaction' %}</button>
                     </form>
                 </div>
             </div>
@@ -57,20 +55,20 @@
         <div class='col-lg-3'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-thumb-tack"></i> Stat
+                    <i class="fa fa-thumb-tack"></i> {% trans 'Stat' %}
                 </div>
                 <div class="panel-body">
                     <ul class="list-group">
                         <li class="list-group-item row">
-                            <span class="col-lg-8">Income</span>
+                            <span class="col-lg-8">{% trans 'Income' %}</span>
                             <span class="col-lg-4 righted">{{ stat_income|intcomma }}</span>
                         </li>
                         <li class="list-group-item row">
-                            <span class="col-lg-8">Spent</span>
+                            <span class="col-lg-8">{% trans 'Spent' %}</span>
                             <span class="col-lg-4 righted">{{ stat_spent|intcomma }}</span>
                         </li>
                         <li class="list-group-item row">
-                            <span class="col-lg-8">Balance</span>
+                            <span class="col-lg-8">{% trans 'Balance' %}</span>
                             <span class="col-lg-4 righted">{{ stat_balance|intcomma }}</span>
                         </li>
                     </ul>
@@ -78,14 +76,14 @@
             </div>
         </div>
 
-        {% include "money/filter_by_block.tpl" %}
+        {% include "money/filter_by_block.html" %}
 
         <div class="clearfix"></div>
 
         <div class='col-lg-6'>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-th-list"></i> History
+                    <i class="fa fa-th-list"></i> {% trans 'History' %}
                 </div>
                 <div class="panel-body">
                     {% for trans in transactions %}

@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from .models import Transaction, Income
 
@@ -15,8 +16,8 @@ class TransactionForm(forms.ModelForm):
         super(TransactionForm, self).__init__(*args, **kwargs)
         self.budget = budget
         self.creator = creator
-        self.fields['title'].widget.attrs['placeholder'] = 'Title...'
-        self.fields['amount'].widget.attrs['placeholder'] = 'Amount...'
+        self.fields['title'].widget.attrs['placeholder'] = _('Title...')
+        self.fields['amount'].widget.attrs['placeholder'] = _('Amount...')
         return
 
     def save(self, *args, **kwargs):
@@ -36,8 +37,8 @@ class IncomeForm(forms.ModelForm):
         super(IncomeForm, self).__init__(*args, **kwargs)
         self.budget = budget
         self.creator = creator
-        self.fields['title'].widget.attrs['placeholder'] = 'Title...'
-        self.fields['amount'].widget.attrs['placeholder'] = 'Amount...'
+        self.fields['title'].widget.attrs['placeholder'] = _('Title...')
+        self.fields['amount'].widget.attrs['placeholder'] = _('Amount...')
         return
 
     def save(self, *args, **kwargs):

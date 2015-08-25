@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -13,7 +14,6 @@
     <!-- Timeline CSS -->
     <link href="/static/css/timeline.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/static/css/sb-admin-2.css" rel="stylesheet">
     <link href="/static/css/abudget_interface.css" rel="stylesheet">
     <!-- Morris Charts CSS -->
     <!-- <link href="/static/bower_components/morrisjs/morris.css" rel="stylesheet"> -->
@@ -40,16 +40,24 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     {% if request.user.is_authenticated %}
                         <ul class="navbar-nav nav">
-                            <li><a href="{% url 'money:transactions' %}"><i class="fa fa-th  fa-fw"></i> Transactions</a></li>
-                            <li><a href="{% url 'money:income' %}"><i class="fa fa-smile-o fa-fw"></i> Income</a></li>
-                            <li><a href="{% url 'users:stat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> Statistics</a></li>
-                            <li><a href="{% url 'users:settings' %}"><i class="fa fa-cog fa-fw"></i> Settings</a></li>
+                            <li><a href="{% url 'money:transactions' %}"><i class="fa fa-th  fa-fw"></i> {% trans 'Transactions' %}</a></li>
+                            <li><a href="{% url 'money:income' %}"><i class="fa fa-smile-o fa-fw"></i> {% trans 'Income' %}</a></li>
+                            <li><a href="{% url 'users:stat' %}"><i class="fa fa-bar-chart-o fa-fw"></i> {% trans 'Statistics' %}</a></li>
+                            <li><a href="{% url 'users:settings' %}"><i class="fa fa-cog fa-fw"></i> {% trans 'Settings' %}</a></li>
                         </ul>
                     {% endif %}
                     <ul class="nav navbar-nav navbar-right">
                         {% if request.user.is_authenticated %}
-                            <li><a href="{% url 'accounts:logout' %}?next=/">Logout</a></li>
+                            <li><a href="{% url 'accounts:logout' %}?next=/">{% trans 'Logout' %}</a></li>
                         {% endif %}
+                        <li style='padding-top: 10px;'>
+                            <form action="/i18n/setlang/" method="post" style='display: inline;' name='lang_form'>
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.META.PATH_INFO }}" />
+                                <button name='language' value='en' class='btn btn-primary btn-sm'>En</button>
+                                <button name='language' value='ru' class='btn btn-primary btn-sm'>Ru</button>
+                            </form>
+                        </li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

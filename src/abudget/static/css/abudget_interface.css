@@ -32,7 +32,8 @@
     color: #555;
 }
 
-.transaction-item .remove-transaction {
+.transaction-item .remove-transaction,
+.transaction-item .remove-income-transaction {
     float: right;
     font-size: 15pt;
     color: #700;

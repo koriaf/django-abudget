@@ -31,6 +31,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'abudget.money.middleware.ProvideBudgetMiddleware',
 )
 
@@ -72,7 +73,11 @@ WSGI_APPLICATION = 'abudget.wsgi.application'
 #     }
 # }
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+LANGUAGES = (
+    ('ru', 'Russian'),
+    ('en', 'English'),
+)
 USE_I18N = True
 
 USE_L10N = True
