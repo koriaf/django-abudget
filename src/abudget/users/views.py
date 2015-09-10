@@ -65,11 +65,13 @@ class UserStatView(LoginRequiredMixin, TemplateView):
             )
         ]
         for category in categories:
+            this_category_transactions = this_period_transactions.filter(category_id=category.id)
             category.report_data = {
-                'transactions_count': this_period_transactions.filter(category_id=category.id).count(),
-                'transactions_amount': this_period_transactions.filter(
-                    category_id=category.id
-                ).aggregate(models.Sum('amount'))['amount__sum'] or 0,
+                'transactions': this_category_transactions,
+                'transactions_count': this_category_transactions.count(),
+                'transactions_amount': this_category_transactions.aggregate(
+                    models.Sum('amount')
+                )['amount__sum'] or 0,
             }
 
         # TODO: transactions without category

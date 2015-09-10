@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class='row'>
-        <h1 class="page-header">{% trans 'Stat' %}</h1>
+        <h1 class="page-header hidden-xs">{% trans 'Stat' %}</h1>
     
         <div class="col-lg-6">
             <div class="panel panel-default">
@@ -24,10 +24,27 @@
                         {% for category in spent_by_category_report_data %}
                             {% if category.report_data.transactions_count > 0 %}
                                 <tr class='spent_by_categories_table_row' data-morris-index="{{ forloop.counter0 }}" data-morris-display="true" data-morris-title="{{ category }}" data-morris-value="{{ category.report_data.transactions_amount }}">
-                                    <td><label class='label label-info hideshow-label'>hide</label></td>
-                                    <td class='title'>{{ category }}</td>
+                                    <td>
+                                        <label class='label label-info hideshow-label'>hide</label>
+                                    </td>
+                                    <td class='title'>
+                                        {{ category }}
+                                        <label class='label label-info category-details-label' data-details-id="category_details_{{ category.id }}">...</label>
+                                    </td>
                                     <td class='righted'>{{ category.report_data.transactions_count }}</td>
                                     <td class='righted' class='value'>{{ category.report_data.transactions_amount|intcomma }}</td>
+                                </tr>
+                                <tr class='stat_category_details' id='category_details_{{ category.id }}'>
+                                    <td></td>
+                                    <td colspan='3'>
+                                        {% for transaction in category.report_data.transactions %}
+                                            <div class='stat-transaction-row'>
+                                                <div class='date'>{{ transaction.date.date }}</div>
+                                                {{ transaction.title|default:"?" }}
+                                                <div class='pull-right'>{{ transaction.amount }}</div><br/>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
                                 </tr>
                             {% endif %}
                         {% endfor %}
@@ -139,6 +156,13 @@
                     $th.text('hide');
                 };
                 spent_by_categories_chart.setData(prepare_spent_by_categories_data());
+            });
+
+
+            $(".category-details-label").bind('click', function category_toggle_details() {
+                var $th = $(this);
+                var target_id = $th.data('details-id');
+                $('#' + target_id).toggle();
             });
         });
     </script>

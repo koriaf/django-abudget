@@ -153,6 +153,11 @@ class Transaction(TransactionBase):
     class Meta:
         ordering = ('-date',)
 
+    def get_short_descr(self):
+        if self.title:
+            return "{} ({})".format(self.title, self.amount)
+        return self.amount
+
     def __str__(self):
         return '[{}#{}] {} at {}'.format(self.budget.id, self.budget.name, self.amount, self.date)
 
