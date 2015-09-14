@@ -55,5 +55,13 @@ Use https!
 ...
 
 
+Screenshots
+-----------
+
+.. image:: https://raw.githubusercontent.com/koriaf/django-abudget/master/abudget_ss_1.png
+
+.. image:: https://raw.githubusercontent.com/koriaf/django-abudget/master/abudget_ss_2.png
+
+
 .. |Build Status| image:: https://travis-ci.org/koriaf/django-abudget.svg?branch=master
    :target: https://travis-ci.org/koriaf/django-abudget
