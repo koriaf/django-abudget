@@ -1,18 +1,17 @@
 django-abudget
 ==============
-Just another home budget application, written in Django. Just because I haven't found something perfectly fit. And I definetly don't like then someone have all my finance information, so, this project is being written for people like me, who can manage to start it on local server for personal use. Or ask someone who can :-)
+Just another home budget application, written in Django. Just because I haven't found something perfectly fit. And I definetly don't like someone having all my finance information. This project is being written for people like me, who can manage to start it on local server for personal use. Or ask someone who can :-)
 
-Assuming that you will have admin access and create some objects (IncomeCategory, TransactionCategory, Budget) from admin panel, and then add some users to share budgets.
+User experience: administrator creates Categories, Budget and related stuff (example provided as fixture) and gives access to another related people.
 
-Current status - pre-alpha. I am using it and improve sometimes.
-
+Current status - beta. I am using it now and making improvements sometimes. It works and fullfills my needs.
 
 | |Build Status|
 
 Code
 --------
 
-It uses Python 3.4 and currently does not require any particular database backend.
+It uses Python 3.4 and currently does not require any particular database backend (works with sqlite and postgresql for my case)
 
 I am going to make a lot of ajax stuff here, so - no form error display, and some things also done quick way, not right way. I will replace it to completely different code anyway, when time comes.
 
@@ -44,8 +43,8 @@ cd ../..
 Testing
 ----------
 ./test-dev.sh (after venv install)
+(currently no tests written)
 
-...
 
 Deployment
 ----------
