@@ -7,18 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/static/icon.png">
     <title>{% block title %}{% endblock %}</title>
-    <!-- Bootstrap Core CSS -->
+
     <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- MetisMenu CSS -->
     <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-    <!-- Timeline CSS -->
     <link href="/static/css/timeline.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="/static/css/abudget_interface.css" rel="stylesheet">
-    <!-- Morris Charts CSS -->
-    <!-- <link href="/static/bower_components/morrisjs/morris.css" rel="stylesheet"> -->
-    <!-- Custom Fonts -->
     <link href="/static/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -66,7 +61,7 @@
             {% block content %}
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header hidden-xs">Transactions</h1>
+                        <h1 class="page-header hidden-xs">{% trans 'Transactions' %}</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -74,19 +69,13 @@
         </div>
     </div>
 
-    <!-- jQuery -->
+    {# we don't use CDN to avoid insertion of harmful code to such sensitive application #}
     <script src="/static/bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
     <script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript -->
     <script src="/static/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-    <!-- Morris Charts JavaScript -->
     <script src="/static/bower_components/raphael/raphael-min.js"></script>
     <script src="/static/bower_components/morrisjs/morris.min.js"></script>
-    <!-- <script src="/static/js/morris-data.js"></script> -->
-    
     <script src="/static/bower_components/jquery.cookie/jquery.cookie.js"></script>
-    <!-- Custom Theme JavaScript -->
     <script src="/static/js/abudget_interface.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
