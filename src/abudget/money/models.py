@@ -161,6 +161,13 @@ class Transaction(TransactionBase):
     def __str__(self):
         return '[{}#{}] {} at {}'.format(self.budget.id, self.budget.name, self.amount, self.date)
 
+    def get_json_repr(self):
+        fields_to_save = ('id', 'category', 'title', 'amount', 'date')
+        result = {}
+        for f in fields_to_save:
+            result[f] = str(getattr(self, f))
+        return result
+
 
 class IncomeCategory(models.Model):
     # TODO: orderable

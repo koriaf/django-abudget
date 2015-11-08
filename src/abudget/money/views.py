@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from braces.views import LoginRequiredMixin
 from django.core.urlresolvers import reverse
@@ -7,6 +8,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, CreateView, View
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from .forms import TransactionForm, IncomeForm
 from .models import Transaction, Income, DEFAULT_FILTER_BY_DATE
@@ -39,21 +41,6 @@ class TransactionsView(LoginRequiredMixin, TemplateView):
         context['new_transaction_form'] = TransactionForm()
         context['transactions'] = transactions
         return context
-
-
-class TransactionsCreateView(LoginRequiredMixin, CreateView):
-    model = Transaction
-    form_class = TransactionForm
-    template_name = 'money/transactions.html'
-
-    def get_form_kwargs(self, *args, **kwargs):
-        form_kwargs = super(TransactionsCreateView, self).get_form_kwargs(*args, **kwargs)
-        form_kwargs['budget'] = self.request.budget
-        form_kwargs['creator'] = self.request.user
-        return form_kwargs
-
-    def get_success_url(self):
-        return reverse('money:transactions')
 
 
 class TransactionsRemoveView(LoginRequiredMixin, View):
@@ -154,3 +141,32 @@ class IncomeRemoveView(LoginRequiredMixin, View):
         )
         transaction.delete()
         return HttpResponse('ok')
+
+
+class TransactionsCreateAjaxView(LoginRequiredMixin, View):
+    def render(self, data):
+        return HttpResponse(
+            json.dumps(data),
+            content_type='application/json'
+        )
+
+    def post(self, request, *args, **kwargs):
+        result = {
+            'status': 'error',
+            'message': 'Internal programming error',
+            'data': None
+        }
+        form = TransactionForm(
+            data=request.POST,
+            budget=request.budget,
+            creator=request.user
+        )
+        if form.is_valid():
+            new_trans = form.save()
+            result['status'] = 'success'
+            result['message'] = _('Transaction added')
+            result['data'] = new_trans.get_json_repr()
+        else:
+            result['message'] = 'Form contain errors'
+            result['data'] = form.errors
+        return self.render(result)

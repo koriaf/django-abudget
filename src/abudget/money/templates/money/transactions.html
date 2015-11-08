@@ -85,7 +85,7 @@
                 <div class="panel-heading">
                     <i class="fa fa-th-list"></i> {% trans 'History' %}
                 </div>
-                <div class="panel-body">
+                <div class="panel-body" id='id_transactions_list'>
                     {% for trans in transactions %}
                         <div class='transaction-item row'>
                             <i class='remove-transaction fa fa-times-circle' data-transaction-id='{{ trans.id }}'></i>
