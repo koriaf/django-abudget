@@ -17,7 +17,7 @@
                     <i class="fa fa-plus-circle"></i> {% trans 'Enter transaction' %}
                 </div>
                 <div class="panel-body transaction-add-form">
-                    <form action="{% url 'money:transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
+                    <form action="{% url 'money:ajax_transaction_create' %}" method='post' class='form-horisontal' id='id_transaction_form'>
                         {% csrf_token %}
                         <input type='hidden' name='category' value='' id='id_selected_category' />
 

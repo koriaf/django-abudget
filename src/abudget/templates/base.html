@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load i18n %}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,7 +12,7 @@
     <link href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
     <link href="/static/css/timeline.css" rel="stylesheet">
-    <link href="/static/css/abudget_interface.css" rel="stylesheet">
+    <link href="{% static 'css/abudget_interface.css' %}" rel="stylesheet">
     <link href="/static/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     {% block extra_head %}{% endblock %}
@@ -76,7 +77,7 @@
     <script src="/static/bower_components/raphael/raphael-min.js"></script>
     <script src="/static/bower_components/morrisjs/morris.min.js"></script>
     <script src="/static/bower_components/jquery.cookie/jquery.cookie.js"></script>
-    <script src="/static/js/abudget_interface.js"></script>
+    <script src="{% static 'js/abudget_interface.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

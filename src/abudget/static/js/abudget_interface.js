@@ -58,7 +58,7 @@
         var data = $form.serialize();
         $.ajax({
             type: "POST",
-            url: '/money/ajax/transactions/create/',
+            url: $form.attr('action'),
             data: data,
             success: function(data){
                 if (data.status == 'success') {
