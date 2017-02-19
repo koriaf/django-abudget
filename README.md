@@ -25,13 +25,25 @@ Installing
 
 Sometimes docker and docker-compose requires root access. You can check docker-compose.yml and Dockerfile to understand what is doing on here.
 
-Just run locally:
+Copy any .env.sample file to .env and update it (note some values must be the same in both files).
+
+Static files:
+
+    yarn install
+    cp -r node_modules src/abudget/static/
+    cp -r node_modules/*/bower_components/* src/abudget/static/node_modules/
+
+To  locally:
 
     docker-compose up
 
-On our server:
+On your server:
 
     docker-compose up -d
+
+
+
+and upload var/static_root to some location where Nginx can see it.
 
 (and configure nginx to forward requests to desired port, which you can find/alter in docker-compose.yml file)
 

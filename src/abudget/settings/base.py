@@ -96,13 +96,14 @@ TIME_FORMAT = "H:i"
 USE_TZ = True
 TIME_ZONE = env('AB_TIMEZONE', default='Europe/Moscow')
 
-STATIC_URL = '/static/'
+STATIC_URL = env('AB_STATIC_URL', default='/static/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "../../node_modules"),
+    os.path.join(BASE_DIR, "extra_static"),
 )
 
+# for collectstatic
 STATIC_ROOT = env(
     'AB_STATIC_ROOT',
     default=os.path.join(BASE_DIR, "../../var/static_root")
