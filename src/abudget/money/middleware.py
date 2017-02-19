@@ -10,6 +10,10 @@ class ProvideBudgetMiddleware(object):
                     raise Budget.DoesNotExist()
                 request.budget = budget
             except (Budget.DoesNotExist, KeyError, ValueError, TypeError):
-                # TODO: if user havent budgets
-                request.budget = Budget.objects.filter(owner=request.user)[0]
+                request.budget = Budget.objects.filter(owner=request.user).first()
+                if request.budget is None:
+                    request.budget = Budget.objects.create(
+                        owner=request.user,
+                        name='Default',
+                    )
         return

@@ -1,5 +1,6 @@
 django-abudget
 ==============
+
 Just another home budget application, written in Django. Just because I haven't found something perfectly fit. And I definetly don't like someone having all my finance information. This project is being written for people like me, who can manage to start it on local server for personal use. Or ask someone who can :-)
 
 User experience: administrator creates Categories, Budget and related stuff (example provided as fixture) and gives access to another related people.
@@ -22,23 +23,17 @@ Going to make install and other instruction later.
 Installing
 ----------
 
-(from memory, haven't tested these commands)
+Sometimes docker and docker-compose requires root access. You can check docker-compose.yml and Dockerfile to understand what is doing on here.
 
-source ./venv.sh
-pip install -r system/requirements.prod.txt
-psql
-   create database abudget;
-   create role abudget with password 'wow' login;
-   grant all privileges on database abudget to abudget;
-cd src/abudget/settings/
-cp prod.py.sample prod.py
-vim prod.py
-cd ../..
-./manage.sh migrate
-./manage.sh createsuperuser
-(optional) ./manage.sh loaddata fixtures/budget_and_categories_for_admin.json
+Just run locally:
 
-...
+    docker-compose up
+
+On our server:
+
+    docker-compose up -d
+
+(and configure nginx to forward requests to desired port, which you can find/alter in docker-compose.yml file)
 
 Testing
 ----------

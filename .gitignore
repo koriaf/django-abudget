@@ -7,6 +7,8 @@
 .venv
 system/venv
 node_modules
+*.env
+pg_data
 
 # local settings and media data
 local.py

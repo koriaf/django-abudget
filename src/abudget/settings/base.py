@@ -1,9 +1,12 @@
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from envparse import env
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = False
+DEBUG = env.bool('AB_DEBUG', default=True)
+SECRET_KEY = env('AB_SECRET_KEY', default="DefaultSecretKey")
+
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -65,38 +68,53 @@ CACHES = {
     }
 }
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': env('AB_DB_ENGINE', default='django.db.backends.postgresql_psycopg2'),
+        'NAME': env('AB_DB_NAME', default='abudget'),
+        'HOST': env('AB_DB_HOST', default='db'),
+        'PORT': env('AB_DB_PORT', default=5432),
+        'USER': env('AB_DB_USERNAME', default='abudget'),
+        'PASSWORD': env('AB_DB_PASSWORD', default='replace it in django.env file'),
+        'ATOMIC_REQUESTS': True,
+    }
+}
 
-# defined in local.py or prod.py, pointless here.
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'abudget',
-#         'USER': 'abudget',
-#         'PASSWORD': 'abudget',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#         'ATOMIC_REQUESTS': True,
-#     }
-# }
+AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
-    ('ru', 'Russian'),
     ('en', 'English'),
+    ('ru', 'Russian'),
 )
 USE_I18N = True
-
 USE_L10N = False
 DATE_FORMAT = "d.m.Y"
 DATETIME_FORMAT = "d.m.Y H:i"
 TIME_FORMAT = "H:i"
 
 USE_TZ = True
-TIME_ZONE = 'Europe/Moscow'
-
+TIME_ZONE = env('AB_TIMEZONE', default='Europe/Moscow')
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "../../node_modules"),
+)
+
+STATIC_ROOT = env(
+    'AB_STATIC_ROOT',
+    default=os.path.join(BASE_DIR, "../../var/static_root")
+)
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+RAVEN_DSN = env('AB_RAVEN_DSN', default=None)
+if RAVEN_DSN:
+    INSTALLED_APPS += [
+        'raven.contrib.django.raven_compat',
+    ]
+    RAVEN_CONFIG = {
+        'dsn': RAVEN_DSN,
+    }
