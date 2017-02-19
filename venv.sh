@@ -1,13 +1,13 @@
 #!/bin/bash
 ROOT=`dirname "${BASH_SOURCE[0]}"`
-act="${ROOT}/system/venv/bin/activate"
+act="${ROOT}/.venv/bin/activate"
 
 if [ ! -f "${act}" ]; then
     set -e
-    /usr/local/bin/pyvenv ${ROOT}/system/venv
+    pyvenv ${ROOT}/.venv
     source ${act}
-    wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | python
-    wget https://bootstrap.pypa.io/get-pip.py -O - | python
+    pip install pip wheel --upgrade
+    pip install -r system/requirements.test.txt
     set +e
 else
     source ${act}

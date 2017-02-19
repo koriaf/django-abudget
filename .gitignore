@@ -4,7 +4,9 @@
 *.pyc
 *.sqlite
 .idea
+.venv
 system/venv
+node_modules
 
 # local settings and media data
 local.py

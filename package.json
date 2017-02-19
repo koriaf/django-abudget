@@ -1,0 +1,11 @@
+{
+  "name": "django-abudget",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Just another home budget application",
+  "main": "",
+  "dependencies": {
+    "jquery.cookie": "~1.4.1",
+    "startbootstrap-sb-admin-2": "~1.0.7"
+  }
+}
