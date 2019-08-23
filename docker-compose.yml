@@ -8,13 +8,15 @@ services:
       - ./docker.env
   web:
     build: .
-    # command: gunicorn abudget.wsgi:application --workers=2 -b 0.0.0.0:8080
-    command: /bin/sh -c "sleep 4 && /src/manage.py runserver 0.0.0.0:5500"
+    # Production usage:
+    command: /bin/sh -c "sleep 4 && gunicorn abudget.wsgi:application --workers=2 -b 0.0.0.0:5600"
+    # Local development:
+    # command: /bin/sh -c "sleep 4 && /src/manage.py runserver 0.0.0.0:5600"
     # useful for debug
     volumes:
       - ./src:/src
     ports:
-      - "127.0.0.1:5500:5500"
+      - "127.0.0.1:5600:5600"
     depends_on:
       - postgres
     env_file:
