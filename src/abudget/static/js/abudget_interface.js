@@ -42,7 +42,7 @@
         var amount_expression = $amount_field.val().replace(',', '.');  // don't care about formats
         var result = NaN;
         try {
-            result = eval(amount_expression);
+            result = eval(amount_expression).toFixed(2);
         } catch (err) {
             result = NaN;
         }
@@ -80,7 +80,7 @@
                     $form.find('input[name="title"]').val('');
                 } else {
                     alert(data.message);
-                } 
+                }
             },
             dataType: 'json'
         });

@@ -1,6 +1,8 @@
 import datetime
+import pytz
 
 from django import forms
+from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
@@ -33,7 +35,11 @@ class TransactionForm(forms.ModelForm):
         self.instance.budget = self.budget
         self.instance.creator = self.creator
         # who cares about time?..
-        self.instance.date = datetime.datetime.combine(self.instance.date, timezone.now().time())
+        self.instance.date = pytz.timezone(settings.TIME_ZONE).localize(
+            datetime.datetime.combine(
+                self.instance.date, timezone.now().time()
+            )
+        )
         return super(TransactionForm, self).save(*args, **kwargs)
 
 

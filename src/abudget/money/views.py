@@ -167,6 +167,11 @@ class TransactionsCreateAjaxView(LoginRequiredMixin, View):
             result['message'] = _('Transaction added')
             result['data'] = new_trans.get_json_repr()
         else:
-            result['message'] = 'Form contain errors'
+            errors = []
+            for e in form.errors.values():
+                errors.append(e[0])
+            result['message'] = 'Error: {}'.format(
+                ', '.join(errors)
+            )
             result['data'] = form.errors
         return self.render(result)
