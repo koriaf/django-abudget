@@ -51,6 +51,5 @@ Wait some seconds so service `web` starts, and then navigate to the link provide
 Screenshots
 -----------
 
-.. image:: https://raw.githubusercontent.com/koriaf/django-abudget/master/abudget_ss_1.png
-
-.. image:: https://raw.githubusercontent.com/koriaf/django-abudget/master/abudget_ss_2.png
+![Screenshot First](https://raw.githubusercontent.com/koriaf/django-abudget/master/doc/abudget_ss_1.png)
+![Screenshot Second](https://raw.githubusercontent.com/koriaf/django-abudget/master/doc/abudget_ss_2.png)
