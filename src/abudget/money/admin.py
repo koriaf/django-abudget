@@ -17,6 +17,7 @@ class TransactionCategoryAdmin(admin.ModelAdmin):
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('id', 'budget', 'title', 'amount', 'date')
     readonly_fields = []
+    list_filter = ('budget', 'date')
 
 
 admin.site.register(IncomeCategory)

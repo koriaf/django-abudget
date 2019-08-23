@@ -120,3 +120,5 @@ if RAVEN_DSN:
     RAVEN_CONFIG = {
         'dsn': RAVEN_DSN,
     }
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10 * 1000
