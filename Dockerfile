@@ -1,11 +1,14 @@
-FROM python:3.5
+FROM python:3.5-alpine
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN mkdir /src
-RUN mkdir /static_root
-WORKDIR /src
+RUN apk update \
+  # psycopg2 dependencies
+  && apk add --virtual build-deps gcc python3-dev musl-dev \
+  && apk add postgresql-dev
 
-ADD system/requirements_docker.txt /src/requirements_docker.txt
-ADD node_modules /src/var/node_modules
+COPY ./requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
 
-RUN pip install -r /src/requirements_docker.txt
+WORKDIR /src/
+

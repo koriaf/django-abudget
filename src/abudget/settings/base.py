@@ -26,6 +26,8 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -33,7 +35,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'abudget.money.middleware.ProvideBudgetMiddleware',
 )
@@ -59,7 +60,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'abudget.wsgi.application'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 CACHES = {
     'default': {
@@ -70,12 +71,12 @@ CACHES = {
 
 DATABASES = {
     'default': {
-        'ENGINE': env('AB_DB_ENGINE', default='django.db.backends.postgresql_psycopg2'),
-        'NAME': env('AB_DB_NAME', default='abudget'),
-        'HOST': env('AB_DB_HOST', default='db'),
-        'PORT': env('AB_DB_PORT', default=5432),
-        'USER': env('AB_DB_USERNAME', default='abudget'),
-        'PASSWORD': env('AB_DB_PASSWORD', default='replace it in django.env file'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': env('POSTGRES_HOST'),
+        'PORT': env('POSTGRES_PORT', default=5432),
+        'NAME': env('POSTGRES_DB'),
+        'USER': env('POSTGRES_USER'),
+        'PASSWORD': env('POSTGRES_PASSWORD'),
         'ATOMIC_REQUESTS': True,
     }
 }
@@ -96,17 +97,17 @@ TIME_FORMAT = "H:i"
 USE_TZ = True
 TIME_ZONE = env('AB_TIMEZONE', default='Europe/Moscow')
 
-STATIC_URL = env('AB_STATIC_URL', default='/static/')
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "extra_static"),
+    '/src/node_modules',
 )
 
 # for collectstatic
 STATIC_ROOT = env(
     'AB_STATIC_ROOT',
-    default=os.path.join(BASE_DIR, "../../var/static_root")
+    default=os.path.join(BASE_DIR, "/var/static_root")
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

@@ -1,19 +1,21 @@
-version: '2'
+version: "3.5"
 services:
-  db:
-    # image: postgres
-    image: postgres:alpine
+  postgres:
+    image: postgres:10.5-alpine
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
-    env_file: postgres.env
+      - ./var/pg_data:/var/lib/postgresql/data
+    env_file:
+      - ./docker.env
   web:
     build: .
-    command: gunicorn abudget.wsgi:application --workers=2 -b 0.0.0.0:8080
+    # command: gunicorn abudget.wsgi:application --workers=2 -b 0.0.0.0:8080
+    command: /bin/sh -c "sleep 4 && /src/manage.py runserver 0.0.0.0:5500"
+    # useful for debug
     volumes:
       - ./src:/src
-      - ./static_root:/static_root
     ports:
-      - "127.0.0.1:5500:8080"
+      - "127.0.0.1:5500:5500"
     depends_on:
-      - db
-    env_file: django.env
+      - postgres
+    env_file:
+      - ./docker.env
